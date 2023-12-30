@@ -26,6 +26,24 @@ return {
       lspconfig.html.setup({
         capabilites = capabilities,
       })
+      lspconfig.cmake.setup({
+        capabilites = capabilities,
+      })
+      lspconfig.rubocop.setup({
+        capabilites = capabilities,
+      })
+      lspconfig.prismals.setup({
+        capabilites = capabilities,
+      })
+      lspconfig.golangci_lint_ls.setup({
+        capabilites = capabilities,
+      })
+      lspconfig.dockerls.setup({
+        capabilites = capabilities,
+      })
+      lspconfig.docker_compose_language_service.setup({
+        capabilites = capabilities,
+      })
       lspconfig.lua_ls.setup({
         capabilites = capabilities,
       })
