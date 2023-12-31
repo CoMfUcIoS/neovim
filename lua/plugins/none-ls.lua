@@ -14,11 +14,7 @@ return {
         null_ls.builtins.formatting.gofumpt,
         null_ls.builtins.formatting.goimports,
         null_ls.builtins.formatting.markdownlint,
-        null_ls.builtins.diagnostics.golangci_lint_ls,
-        null_ls.builtins.diagnostics.jsonlint,
         null_ls.builtins.diagnostics.markdownlint,
-        null_ls.builtins.diagnostics.phpcs,
-        null_ls.builtins.diagnostics.pylint,
       },
     })
 
