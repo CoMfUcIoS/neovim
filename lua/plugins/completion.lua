@@ -28,10 +28,17 @@ return {
 		lazy = false,
 		config = true,
 	},
+  {
+      "zbirenbaum/copilot-cmp",
+      config = function()
+          require("copilot_cmp").setup()
+      end,
+  },
 	{
 		"hrsh7th/nvim-cmp",
 		lazy = false,
 		config = function()
+      local lspkind = require('lspkind')
 			local cmp = require("cmp")
 			cmp.setup({
 				window = {
@@ -59,11 +66,19 @@ return {
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
 				}),
 				sources = cmp.config.sources({
+          { name = "copilot"},
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 				}, {
 					{ name = "buffer" },
 				}),
+        formatting = {
+          format = lspkind.cmp_format({
+      mode = "symbol",
+      max_width = 50,
+      symbol_map = { Copilot = "" }
+    })
+        }
 			})
 		end,
 	},
