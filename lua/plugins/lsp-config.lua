@@ -59,6 +59,10 @@ return {
       lspconfig.rust_analyzer.setup({
         capabilites = capabilities,
       })
+      lspconfig.phpactor.setup({
+        capabilites = capabilities,
+      })
+
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
