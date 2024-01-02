@@ -1,11 +1,8 @@
 return {
-	"nvim-lualine/lualine.nvim",
-	config = function()
-		require("lualine").setup({
-			options = {
-        theme = "dracula",
-				-- theme = "catppuccin",
-			},
-		})
-	end,
+  "nvim-lualine/lualine.nvim",
+  opts = {
+    options = {
+      theme = "dracula",
+    },
+  },
 }

@@ -12,7 +12,7 @@ return {
         dim = 0.18,
         cleaning_interval = 1250,
       },
-      events = { "InsertLeave", "TextChanged" },
+      events = { "InsertLeave"},
       write_all_buffers = false,
       debounce_delay = 135,
     })

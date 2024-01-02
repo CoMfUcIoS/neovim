@@ -2,19 +2,15 @@ return {
   {
     "williamboman/mason.nvim",
     lazy = false,
-    config = function()
-      require("mason").setup(
-        {
-          ui = {
-            icons = {
-              package_installed = "✓",
-              package_pending = "➜",
-              package_uninstalled = "✗"
-            }
-          }
-        }
-      )
-    end,
+    opts = {
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
+        },
+      },
+    },
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -60,7 +56,6 @@ return {
       lspconfig.gopls.setup({
         capabilites = capabilities,
       })
-
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
