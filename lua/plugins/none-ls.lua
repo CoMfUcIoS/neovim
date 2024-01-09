@@ -1,6 +1,12 @@
 return {
-	"nvimtools/none-ls.nvim",
-	config = function()
+  "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "nvimtools/none-ls.nvim",
+    },
+
+  config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({
 			sources = {
@@ -20,6 +26,10 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+    require("mason-null-ls").setup({
+      automatic_installation = true
+    } )
+
+ 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
 	end,
 }

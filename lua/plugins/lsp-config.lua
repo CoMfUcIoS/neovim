@@ -30,40 +30,40 @@ return {
 
       local lspconfig = require("lspconfig")
       lspconfig.tsserver.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.html.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.cmake.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.rubocop.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.prismals.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.golangci_lint_ls.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.dockerls.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.docker_compose_language_service.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.lua_ls.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.gopls.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.rust_analyzer.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
       lspconfig.phpactor.setup({
-        capabilites = capabilities,
+        capabilities = capabilities,
       })
 
 
