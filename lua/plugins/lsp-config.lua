@@ -13,16 +13,19 @@ return {
     },
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    lazy = false,
-    opts = {
-      auto_install = true,
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     lazy = false,
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "williamboman/mason-lspconfig",
+      { "antosha417/nvim-lsp-file-operations", config = true },
+    },
     config = function()
+      require("mason-lspconfig").setup({
+        automatic_installation = true,
+      })
+
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       local lspconfig = require("lspconfig")
