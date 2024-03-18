@@ -65,6 +65,10 @@ return {
       lspconfig.phpactor.setup({
         capabilities = capabilities,
       })
+      lspconfig.grammarly.setup({
+        capabilites = capabilities,
+      })
+
 
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
