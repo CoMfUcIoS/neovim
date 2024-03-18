@@ -1,6 +1,6 @@
 return {
-	"onsails/lspkind.nvim",
-	config = function()
+  "onsails/lspkind.nvim",
+  config = function()
     require("lspkind").init({})
-	end,
+  end,
 }
