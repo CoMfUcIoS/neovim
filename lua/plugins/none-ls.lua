@@ -1,14 +1,15 @@
 return {
-  "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "nvimtools/none-ls.nvim",
-    },
+	"jay-babu/mason-null-ls.nvim",
+	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		"williamboman/mason.nvim",
+		"nvimtools/none-ls.nvim",
+	},
 
-  config = function()
+	config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({
+			-- default_timeout = 20000,
 			sources = {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.formatting.prettier,
@@ -22,14 +23,16 @@ return {
 				null_ls.builtins.formatting.markdownlint,
 				null_ls.builtins.diagnostics.markdownlint,
 				null_ls.builtins.diagnostics.phpcs,
-        null_ls.builtins.formatting.phpcbf,
+				null_ls.builtins.formatting.phpcbf,
 			},
 		})
 
-    require("mason-null-ls").setup({
-      automatic_installation = true
-    } )
+		require("mason-null-ls").setup({
+			automatic_installation = true,
+		})
 
- 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+		vim.keymap.set("n", "<leader>gf", function()
+			vim.lsp.buf.format({ timeout_ms = 20000 })
+		end, {})
 	end,
 }
