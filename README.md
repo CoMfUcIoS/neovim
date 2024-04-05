@@ -61,4 +61,3 @@ sudo apt install neovim
 ```bash
 git clone https://github.com/CoMfUcIoS/neovim.git ~/.config/nvim
 ```
-
