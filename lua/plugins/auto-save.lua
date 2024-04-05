@@ -14,7 +14,7 @@ return {
       },
       events = { "InsertLeave" },
       write_all_buffers = false,
-      debounce_delay = 135,
+      debounce_delay = 250,
     })
   end,
 }
