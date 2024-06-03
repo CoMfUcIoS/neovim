@@ -14,7 +14,10 @@ return {
       },
       events = { "InsertLeave" },
       write_all_buffers = false,
-      debounce_delay = 250,
+      debounce_delay = 135,
     })
+
+    vim.keymap.set("n", "<leader>as", ":ASToggle<CR>", { noremap = true, silent = true })
+
   end,
 }

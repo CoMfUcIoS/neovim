@@ -22,29 +22,29 @@ return {
 		"hrsh7th/cmp-buffer",
 		lazy = false,
 	},
-	-- {
-	-- 	"zbirenbaum/copilot.lua",
-	-- 	cmd = "Copilot",
-	-- 	event = "InsertEnter",
-	-- 	opts = {
-	-- 		suggestion = { enabled = false },
-	-- 		panel = { enabled = false },
-	-- 	},
-	-- },
 	{
-		"Exafunction/codeium.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"hrsh7th/nvim-cmp",
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		opts = {
+			suggestion = { enabled = false },
+			panel = { enabled = false },
 		},
-		config = function()
-			require("codeium").setup({})
-		end,
 	},
 	-- {
-	-- 	"zbirenbaum/copilot-cmp",
-	-- 	opts = {},
+	-- 	"Exafunction/codeium.nvim",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"hrsh7th/nvim-cmp",
+	-- 	},
+	-- 	config = function()
+	-- 		require("codeium").setup({})
+	-- 	end,
 	-- },
+	{
+		"zbirenbaum/copilot-cmp",
+		opts = {},
+	},
 	{
 		"hrsh7th/nvim-cmp",
 		lazy = false,
@@ -120,8 +120,8 @@ return {
 					-- }),
 				},
 				sources = {
-					-- { name = "copilot" },
-          { name = "codeium" },
+					{ name = "copilot" },
+          -- { name = "codeium" },
 					{ name = "luasnip" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },
@@ -142,8 +142,8 @@ return {
 				sorting = {
 					priority_weight = 2,
 					comparators = {
-						-- require("copilot_cmp.comparators").prioritize,
-						-- require("copilot_cmp.comparators").score,
+						require("copilot_cmp.comparators").prioritize,
+						require("copilot_cmp.comparators").score,
 
 						-- Below is the default comparitor list and order for nvim-cmp
 						cmp.config.compare.offset,
@@ -170,8 +170,8 @@ return {
 
 							local menu = source_mapping[entry.source.name]
 
-							-- if entry.source.name == "copilot" then
-              if entry.source.name == "codeium" then
+							if entry.source.name == "copilot" then
+              -- if entry.source.name == "codeium" then
 								if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
 									menu = entry.completion_item.data.detail .. " " .. menu
 								end
