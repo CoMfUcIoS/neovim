@@ -33,6 +33,6 @@ return {
 
 		vim.keymap.set("n", "<leader>gf", function()
 			vim.lsp.buf.format({ timeout_ms = 20000 })
-		end, {})
+		end, { desc = "Format buffer" })
 	end,
 }

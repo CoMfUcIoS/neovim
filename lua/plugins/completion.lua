@@ -2,6 +2,8 @@ return {
 	{
 		"L3MON4D3/LuaSnip",
 		lazy = false,
+		version = "v2.*",
+		build = "make install_jsregexp",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
 			"saadparwaiz1/cmp_luasnip",
@@ -72,7 +74,7 @@ return {
 						cmp.TriggerEvent.TextChanged,
 						cmp.TriggerEvent.InsertEnter,
 					},
-					completeopt = "menuone,noinsert,noselect",
+					completeopt = "menu,menuone,preview,noinsert,noselect",
 					-- keyword_length = 0,
 				},
 				window = {
@@ -103,13 +105,13 @@ return {
 							fallback()
 						end
 					end),
-					["<C-j>"] = cmp.mapping({
+					["<C-e>"] = cmp.mapping({
 						i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
 					}),
-					["<C-k>"] = cmp.mapping({
+					["<C-i>"] = cmp.mapping({
 						i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
 					}),
-					["<C-e>"] = cmp.mapping({
+					["<C-x>"] = cmp.mapping({
 						i = cmp.mapping.abort(),
 					}),
 					["<CR>"] = cmp.mapping({
@@ -121,9 +123,9 @@ return {
 				},
 				sources = {
 					{ name = "copilot" },
-          -- { name = "codeium" },
-					{ name = "luasnip" },
+					-- { name = "codeium" },
 					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
 					{ name = "path" },
 					{
 						name = "buffer",
@@ -162,7 +164,7 @@ return {
 					format = lspkind.cmp_format({
 						mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
 						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-
+						ellipsis_char = "...", -- the character to show ellipsis in place of omitted part (default is '...')
 						-- The function below will be called before any actual modifications from lspkind
 						-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
 						before = function(entry, vim_item)
@@ -171,7 +173,7 @@ return {
 							local menu = source_mapping[entry.source.name]
 
 							if entry.source.name == "copilot" then
-              -- if entry.source.name == "codeium" then
+								-- if entry.source.name == "codeium" then
 								if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
 									menu = entry.completion_item.data.detail .. " " .. menu
 								end
