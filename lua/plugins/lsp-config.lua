@@ -53,6 +53,12 @@ return {
 			lspconfig.docker_compose_language_service.setup({
 				capabilities = capabilities,
 			})
+      lspconfig.puppet.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.ruby_lsp.setup({
+        capabilities = capabilities,
+      })
 			lspconfig.lua_ls.setup({
 				settings = {
 					Lua = {
