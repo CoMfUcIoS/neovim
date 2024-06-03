@@ -78,6 +78,7 @@ return {
 				"rubocop", -- ruby formatter
 				"rufo", -- ruby formatter
 				"shfmt", -- shell formatter
+				"luacheck", -- lua linter
 			},
 		})
 	end,
