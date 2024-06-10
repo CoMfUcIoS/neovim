@@ -12,6 +12,6 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>tt", "<cmd>lua require('FTerm').toggle()<cr>", desc = "Toggle Floating Terminal" },
+		{ "<leader>tt", "<cmd>lua require('FTerm').toggle()<CR>", desc = "Toggle FTerm" },
 	},
 }
