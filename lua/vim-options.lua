@@ -1,4 +1,3 @@
-
 vim.cmd("let g:netrw_liststyle = 3")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -34,15 +33,14 @@ opt.cursorline = true
 
 -- colorscheme
 opt.termguicolors = true
-opt.background = 'dark'
-opt.signcolumn = 'yes'
+opt.background = "dark"
+opt.signcolumn = "yes"
 
 --backspace settings
-opt.backspace = 'indent,eol,start'
-
+opt.backspace = "indent,eol,start"
 
 --clipboard settings
-opt.clipboard = 'unnamedplus'
+opt.clipboard = "unnamedplus"
 
 --split settings
 opt.splitright = true
