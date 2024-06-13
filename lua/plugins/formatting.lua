@@ -22,8 +22,9 @@ return {
 				python = { "isort", "black" },
 				golang = { "gofmt", "gofumpt" },
 				rust = { "rustfmt" },
-				ruby = { "rufo" },
+				ruby = { "rufo", "rubocop" },
 				sh = { "shfmt" },
+				puppet = { "puppet-lint" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
