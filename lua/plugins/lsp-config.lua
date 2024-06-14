@@ -153,6 +153,45 @@ return {
 					},
 				})
 			end,
+			["intelephense"] = function()
+				-- configure intelephense server
+				lspconfig["intelephense"].setup({
+					capabilities = capabilities,
+					cmd = { "intelephense", "--stdio" },
+					filetypes = { "php" },
+					root_dir = function(pattern)
+						return lspconfig.util.root_pattern("composer.json", ".git")(pattern)
+							or lspconfig.util.find_git_ancestor(pattern)
+							or lspconfig.util.path.dirname(pattern)
+					end,
+					settings = {
+						intelephense = {
+							files = {
+								exclude = {
+									"**/.git/**",
+									"**/.svn/**",
+									"**/.hg/**",
+									"**/CVS/**",
+									"**/.DS_Store/**",
+									"**/node_modules/**",
+									"**/bower_components/**",
+									"**/vendor/**",
+									"**/.next/**",
+									"**/dist/**",
+									"**/build/**",
+									"**/public/**",
+									"**/tmp/**",
+									"**/cache/**",
+									"**/logs/**",
+									"**/logs/**",
+									"**/log",
+								},
+								maxSize = 5000000,
+							},
+						},
+					},
+				})
+			end,
 		})
 	end,
 }

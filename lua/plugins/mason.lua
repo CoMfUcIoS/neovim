@@ -42,7 +42,6 @@ return {
 				"golangci_lint_ls",
 				"gopls",
 				"grammarly",
-				"phpactor",
 				"puppet",
 				"rubocop",
 				"ruby_lsp",
@@ -58,11 +57,13 @@ return {
 				"prismals",
 				"pyright",
 				"markdown_oxide",
+				"intelephense",
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
+				"php-debug-adapter",
 				"black", -- python formatter
 				"gofumpt", -- go formatter
 				"goimports", -- go formatter
@@ -70,7 +71,8 @@ return {
 				"golangci-lint", -- go linter
 				"isort", -- python formatter
 				"markdownlint", -- markdown linter
-				"phpcbf", -- php formatter
+				"php-cs-fixer", -- php formatter
+				"phpstan", -- php linter
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
 				"isort", -- python formatter

@@ -28,6 +28,7 @@ return {
 				"typescript",
 				"tsx",
 				"yaml",
+				"php",
 				"html",
 				"css",
 				"prisma",

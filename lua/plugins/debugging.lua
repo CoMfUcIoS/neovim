@@ -27,6 +27,27 @@ return {
 
 		local dap, dapui = require("dap"), require("dapui")
 
+		dap.adapters.php = {
+			type = "executable",
+			command = "php-debug-adapter",
+		}
+
+		dap.configurations.php = {
+			{
+				type = "php",
+				request = "launch",
+				name = "Listen for Xdebug",
+				port = 9000,
+				stopOnEntry = true,
+				pathMappings = {
+					{
+						localRoot = "${workspaceFolder}",
+						remoteRoot = "/var/www/html",
+					},
+				},
+			},
+		}
+
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
 		end

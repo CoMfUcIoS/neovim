@@ -25,6 +25,7 @@ return {
 				ruby = { "rufo", "rubocop" },
 				sh = { "shfmt" },
 				puppet = { "puppet-lint" },
+				php = { "php-cs-fixer", "phpstan" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
