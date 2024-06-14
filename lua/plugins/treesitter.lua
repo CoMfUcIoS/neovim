@@ -22,6 +22,7 @@ return {
 			},
 			-- ensure these language parsers are installed
 			ensure_installed = {
+				"jsonc",
 				"json",
 				"javascript",
 				"typescript",
@@ -46,6 +47,8 @@ return {
 				"rust",
 				"puppet",
 				"ruby",
+				"diff",
+				"regex",
 			},
 			incremental_selection = {
 				enable = true,
