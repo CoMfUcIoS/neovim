@@ -166,6 +166,12 @@ return {
 					end,
 					settings = {
 						intelephense = {
+							diagnostics = {
+								enable = true,
+							},
+							format = {
+								enable = true,
+							},
 							files = {
 								exclude = {
 									"**/.git/**",
