@@ -14,23 +14,8 @@ The repository is structured as follows:
 
 ## Plugins
 
-The project includes a variety of plugins, each with its own purpose. All plugins are located in the [`lua/plugins/`](lua/plugins/) directory. Here are some of them:
-
-- `alpha.lua`: This plugin provides a startup screen for Neovim.
-- `auto-pairs.lua`: This plugin automatically pairs brackets and quotes.
-- `auto-save.lua`: This plugin automatically saves your work at regular intervals.
-- `completion.lua`: This plugin provides advanced auto-completion features.
-- `dracula.lua`: This plugin provides the Dracula theme for Neovim.
-- `firevim.lua`: This plugin provides a browser-based Neovim interface. ([firevim](https://github.com/glacambre/firenvim))
-- `fugitive.lua`: This plugin provides Git integration for Neovim.
-- `gitsigns.lua`: This plugin shows Git diff signs in the Neovim gutter.
-- `lsp-config.lua`: This plugin configures the Language Server Protocol (LSP) for Neovim.
-- `lspkind.lua`: This plugin shows icons next to LSP completion items.
-- `lualine.lua`: This plugin provides a status line for Neovim.
-- `neo-tree.lua`: This plugin provides a file explorer for Neovim.
-- `none-ls.lua`: This plugin provides a dummy LSP for Neovim.
-- `telescope.lua`: This plugin provides a highly extensible fuzzy finder.
-- `treesitter.lua`: This plugin provides better syntax highlighting and code navigation.
+The project includes a variety of plugins, each with its own purpose.
+All plugins are located in the [`lua/plugins/`](lua/plugins/) directory.
 
 ## Installation
 
