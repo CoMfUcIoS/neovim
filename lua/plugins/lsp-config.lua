@@ -165,8 +165,7 @@ return {
 				lspconfig["puppet"].setup({
 					capabilities = capabilities,
 					cmd = {
-						"~/.local/share/nvim/mason/bin/puppet-languageserver",
-						"--stdio",
+						os.getenv("HOME") .. "/.local/share/nvim/mason/bin/puppet-languageserver",
 					},
 				})
 			end,
