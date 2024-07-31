@@ -157,10 +157,7 @@ return {
 				-- configure grammarly server
 				lspconfig["grammarly"].setup({
 					capabilities = capabilities,
-					cmd = {
-						"grammarly-languageserver",
-						"--stdio",
-					},
+					cmd = { os.getenv("HOME") .. "/.config/nvim/grammarly.sh" },
 				})
 			end,
 			["puppet"] = function()
