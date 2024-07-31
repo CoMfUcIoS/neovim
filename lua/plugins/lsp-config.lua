@@ -153,6 +153,26 @@ return {
 					},
 				})
 			end,
+			["grammarly"] = function()
+				-- configure grammarly server
+				lspconfig["grammarly"].setup({
+					capabilities = capabilities,
+					cmd = {
+						"grammarly-languageserver",
+						"--stdio",
+					},
+				})
+			end,
+			["puppet"] = function()
+				-- configure puppet server
+				lspconfig["puppet"].setup({
+					capabilities = capabilities,
+					cmd = {
+						"~/.local/share/nvim/mason/bin/puppet-languageserver",
+						"--stdio",
+					},
+				})
+			end,
 			["intelephense"] = function()
 				-- configure intelephense server
 				lspconfig["intelephense"].setup({

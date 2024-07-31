@@ -31,6 +31,10 @@ return {
 		opts = {
 			suggestion = { enabled = false },
 			panel = { enabled = false },
+			filetypes = {
+				markdown = true,
+				help = true,
+			},
 		},
 	},
 	-- {
@@ -68,6 +72,7 @@ return {
 				return col ~= 0
 					and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 			end
+
 			cmp.setup({
 				completion = {
 					autocomplete = {
