@@ -9,7 +9,7 @@ return {
 		require("huez").setup({})
 		local pickers = require("huez.pickers")
 
-		vim.keymap.set("n", "<leader>co", pickers.themes, { desc = "Colorscheme" })
+		vim.keymap.set("n", "<leader>cop", pickers.themes, { desc = "Colorscheme" })
 		vim.keymap.set("n", "<leader>coi", ":Huez<CR>", { desc = "Installed colorschemes" })
 		vim.keymap.set("n", "<leader>cof", pickers.favorites, { desc = "Favorite colorschemes" })
 		vim.keymap.set("n", "<leader>col", pickers.live, { desc = "Registry of colorschemes" })
