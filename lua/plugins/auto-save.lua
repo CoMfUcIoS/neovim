@@ -4,7 +4,7 @@ return {
 	config = function()
 		local autoSave = require("auto-save")
 		autoSave.setup({
-			enabled = true,
+			enabled = false,
 			execution_message = {
 				message = function()
 					return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))

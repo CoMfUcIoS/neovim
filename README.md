@@ -27,11 +27,22 @@ All plugins are located in the [`lua/plugins/`](lua/plugins/) directory.
 brew install neovim
 ```
 
+for images to work properly, install the following:
+
+1. Install `kitty` terminal
+
+````bash
+brew install imagemagick
+brew install luarocks
+luarocks --local --lua-version=5.1 install magick
+```
+If you use Tmux, ~/Tmux.conf should have set -gq allow-passthrough on
+
 2. Clone this repository into your Neovim configuration directory:
 
 ```bash
 git clone https://github.com/CoMfUcIoS/neovim.git ~/.config/nvim
-```
+````
 
 ### Linux
 

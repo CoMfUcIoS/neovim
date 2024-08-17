@@ -1,9 +1,3 @@
---- Prequisites:
---- 1. Install `kitty` terminal
---- 2. brew install imagemagick
---- 3. brew install luarocks
---- 4. luarocks --local --lua-version=5.1 install magick
---- 5. Tmux.conf should have set -gq allow-passthrough on
 package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
 package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
 
