@@ -26,11 +26,12 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 
 keymap.set("n", "<leader>qx", "<cmd>qa<CR>", { desc = "Quit" }) -- quit
 keymap.set("n", "<leader>qb", "<cmd>bd<CR>", { desc = "Close buffer" })
+keymap.set("n", "<leader>qw", "<cmd>%bd<CR>", { desc = "Close all buffers" })
 
+keymap.set("n", "<leader>qa", "", { desc = "Add Surround" })
 keymap.set("n", '<leader>qa"', 'ciw""<ESC>P', { desc = "Surround word with double quotes" })
 keymap.set("n", "<leader>qa'", "ciw''<ESC>P", { desc = "Surround word with single quotes" })
 keymap.set("n", "<leader>qa(", "ciw()<ESC>P", { desc = "Surround word with parentheses" })
 keymap.set("n", "<leader>qa[", "ciw[]<ESC>P", { desc = "Surround word with brackets" })
 keymap.set("n", "<leader>qa{", "ciw{}<ESC>P", { desc = "Surround word with braces" })
-keymap.set("n", "<leader>qc'", "ciw<DEl><BS>''<ESC>P", { desc = "Change surround to '" })
-keymap.set("n", '<leader>qc"', 'ciw<DEl><BS>""<ESC>P', { desc = 'Change surround to "' })
+keymap.set("n", "<leader>qc", "", { desc = "Change Surround" })
