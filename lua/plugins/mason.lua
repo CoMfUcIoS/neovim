@@ -44,7 +44,7 @@ return {
 				"grammarly",
 				"puppet",
 				"rubocop",
-				"ruby_lsp",
+				-- "ruby_lsp",
 				"rust_analyzer",
 				"tsserver",
 				"html",

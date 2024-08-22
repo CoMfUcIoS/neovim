@@ -35,3 +35,5 @@ keymap.set("n", "<leader>qa(", "ciw()<ESC>P", { desc = "Surround word with paren
 keymap.set("n", "<leader>qa[", "ciw[]<ESC>P", { desc = "Surround word with brackets" })
 keymap.set("n", "<leader>qa{", "ciw{}<ESC>P", { desc = "Surround word with braces" })
 keymap.set("n", "<leader>qc", "", { desc = "Change Surround" })
+keymap.set("n", "<leader>qc'", "ciw<DEl><BS>''<ESC>P", { desc = "Change surround to '" })
+keymap.set("n", '<leader>qc"', 'ciw<DEl><BS>""<ESC>P', { desc = 'Change surround to "' })

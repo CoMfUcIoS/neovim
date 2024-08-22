@@ -22,7 +22,7 @@ return {
 				python = { "isort", "black" },
 				golang = { "gofmt", "gofumpt" },
 				rust = { "rustfmt" },
-				ruby = { "rubocop", "rufo" },
+				ruby = { "rubocop" },
 				sh = { "shfmt" },
 				puppet = { "puppet-lint" },
 				php = { "php_cs_fixer", "phpstan" },
