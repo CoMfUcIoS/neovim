@@ -22,10 +22,11 @@ return {
 				python = { "isort", "black" },
 				golang = { "gofmt", "gofumpt" },
 				rust = { "rustfmt" },
-				ruby = { "rufo", "rubocop" },
+				ruby = { "rubocop", "rufo" },
 				sh = { "shfmt" },
 				puppet = { "puppet-lint" },
 				php = { "php_cs_fixer", "phpstan" },
+				clojure = { "cljfmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

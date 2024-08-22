@@ -17,6 +17,7 @@ return {
 			ruby = { "rubocop" },
 			rust = { "cargo" },
 			lua = { "luacheck" },
+			clojure = { "clj-kondo" },
 		}
 
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
