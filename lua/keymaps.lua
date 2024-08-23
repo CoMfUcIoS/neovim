@@ -37,3 +37,21 @@ keymap.set("n", "<leader>qa{", "ciw{}<ESC>P", { desc = "Surround word with brace
 keymap.set("n", "<leader>qc", "", { desc = "Change Surround" })
 keymap.set("n", "<leader>qc'", "ciw<DEl><BS>''<ESC>P", { desc = "Change surround to '" })
 keymap.set("n", '<leader>qc"', 'ciw<DEl><BS>""<ESC>P', { desc = 'Change surround to "' })
+
+keymap.set("n", "<leader>mj", "<cmd>m .+1<CR>==", { desc = "Move line down" })
+keymap.set("n", "<leader>mk", "<cmd>m .-2<CR>==", { desc = "Move line up" })
+keymap.set("v", "<leader>me", "<cmd>m '>+1<CR>gv=gv", { desc = "Move Line Down" })
+keymap.set("v", "<leader>mi", "<cmd>m '<-2<CR>gv=gv", { desc = "Move Line Up" })
+
+keymap.set("n", "<leader>ss", "<cmd>s/\\v", { desc = "search and replace on line" })
+keymap.set("n", "<leader>SS", "<cmd>%s/\\v", { desc = "search and replace in file" })
+
+keymap.set("n", "<leader>yf", "<cmd>%y<cr>", { desc = "yank current file to the clipboard buffer" })
+keymap.set("n", "<leader>df", "<cmd>%d_<cr>", { desc = "delete file content to black hole register" })
+keymap.set("n", "<leader>sa", "ggVG", { desc = "select all" })
+
+keymap.set({ "n", "v" }, "<leader>gbf", "<cmd>GBrowse<cr>", { desc = "Git browse current file in browser" })
+keymap.set("n", "<leader>gbc", function()
+	vim.cmd("GBrowse!")
+end, { desc = "Copy URL to current file" })
+keymap.set("v", "<leader>gbl", "<cmd>GBrowse!<CR>", { desc = "Git browse current file and selected line in browser" })
