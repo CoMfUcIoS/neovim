@@ -2,6 +2,15 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
+local getSelectedRange = function()
+	local line1 = vim.fn.getpos("v")[2]
+	local line2 = vim.fn.getpos(".")[2]
+	if line1 > line2 then
+		line1, line2 = line2, line1
+	end
+	return line1 .. "," .. line2 .. " "
+end
+
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear highlights" })
 
 -- increment/decrement numbers
@@ -51,7 +60,12 @@ keymap.set("n", "<leader>df", "<cmd>%d_<cr>", { desc = "delete file content to b
 keymap.set("n", "<leader>sa", "ggVG", { desc = "select all" })
 
 keymap.set({ "n", "v" }, "<leader>gbf", "<cmd>GBrowse<cr>", { desc = "Git browse current file in browser" })
-keymap.set("n", "<leader>gbc", function()
-	vim.cmd("GBrowse!")
-end, { desc = "Copy URL to current file" })
-keymap.set("v", "<leader>gbl", "<cmd>GBrowse!<CR>", { desc = "Git browse current file and selected line in browser" })
+keymap.set("n", "<leader>gbc", "<cmd>GBrowse!<cr>", { desc = "Copy URL to current file" })
+keymap.set("v", "<leader>gbl", function()
+	local range = getSelectedRange()
+	vim.cmd(range .. "GBrowse ")
+end, { desc = "Git browse current file and selected line in browser" })
+keymap.set("v", "<leader>gbc", function()
+	local range = getSelectedRange()
+	vim.cmd(range .. "GBrowse!")
+end, { desc = "Copy URL to current file with selected lines" })
