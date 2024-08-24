@@ -2,6 +2,12 @@
 
 This repository contains a comprehensive Neovim configuration written in Lua. It includes a variety of plugins and settings to enhance your Neovim experience.
 
+**Notice: This configuration is tuned for MacOS using a Customised Miryoku ColemakDH keyboard layout on a split keyboard. If you are using a different keyboard layout, you may need to make some adjustments to the keybindings.**
+
+You can check the following repositories for the ZMK and QMK firmware for the above mentioned keyboard layout:
+[qmk firmware](https://github.com/CoMfUcIoS/qmk_firmware),
+[zmk firmware](https://github.com/CoMfUcIoS/miryoku_zmk)
+
 ## Structure
 
 The repository is structured as follows:
