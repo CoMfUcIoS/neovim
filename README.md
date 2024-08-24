@@ -44,6 +44,45 @@ If you use Tmux, ~/Tmux.conf should have set -gq allow-passthrough on
 git clone https://github.com/CoMfUcIoS/neovim.git ~/.config/nvim
 ````
 
+### Tmux navigation
+
+for tmux - nvim navigation to work properly, you need to add the following to your `~/.tmux.conf` file:
+
+```bash
+# in your tpm plugins
+set -g @plugin 'christoomey/vim-tmux-navigator'
+
+# in your key bindings
+
+# decide whether we're in a Vim process
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+
+bind-key -n 'M-Left' if-shell "$is_vim" 'send-keys M-Left' 'select-pane -L'
+bind-key -n 'M-Down' if-shell "$is_vim" 'send-keys M-Down' 'select-pane -D'
+bind-key -n 'M-Up' if-shell "$is_vim" 'send-keys M-Up' 'select-pane -U'
+bind-key -n 'M-Right' if-shell "$is_vim" 'send-keys M-Right' 'select-pane -R'
+
+tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+
+if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
+    "bind-key -n 'M-\\' if-shell \"$is_vim\" 'send-keys M-\\'  'select-pane -l'"
+if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
+    "bind-key -n 'M-\\' if-shell \"$is_vim\" 'send-keys M-\\\\'  'select-pane -l'"
+
+bind-key -n 'M-Space' if-shell "$is_vim" 'send-keys M-Space' 'select-pane -t:.+'
+
+bind-key -T copy-mode-vi 'M-Left' select-pane -L
+bind-key -T copy-mode-vi 'M-Down' select-pane -D
+bind-key -T copy-mode-vi 'M-Up' select-pane -U
+bind-key -T copy-mode-vi 'M-Right' select-pane -R
+bind-key -T copy-mode-vi 'M-\' select-pane -l
+bind-key -T copy-mode-vi 'M-Space' select-pane -t:.+
+
+```
+
+Now you can use your Alt/Options key to navigate between tmux panes and nvim splits
+
 ### Linux
 
 1. Install Neovim using your package manager. For Ubuntu, you can use:
