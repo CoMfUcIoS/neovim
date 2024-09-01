@@ -20,7 +20,7 @@ return {
 		vim.keymap.set(
 			"n",
 			"<leader>as",
-			":ASToggle<CR>",
+			"<cmd>ASToggle<CR>",
 			{ desc = "Toggle auto save function", noremap = true, silent = true }
 		)
 	end,

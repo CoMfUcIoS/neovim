@@ -11,7 +11,7 @@ local getSelectedRange = function()
 	return line1 .. "," .. line2 .. " "
 end
 
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear highlights" })
+keymap.set("n", "<leader>nh", "<cmd>nohl<CR>", { desc = "Clear highlights" })
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment

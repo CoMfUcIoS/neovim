@@ -179,7 +179,7 @@ return {
 		},
 		{
 			"<leader>ap",
-			":lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
+			"<cmd>lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
 			mode = "x",
 			desc = "CopilotChat - Prompt actions",
 		},
@@ -192,13 +192,13 @@ return {
 		-- Chat with Copilot in visual mode
 		{
 			"<leader>av",
-			":CopilotChatVisual<cr>",
+			"<cmd>CopilotChatVisual<cr>",
 			mode = "x",
 			desc = "CopilotChat - Open in vertical split",
 		},
 		{
 			"<leader>ax",
-			":CopilotChatInline<cr>",
+			"<cmd>CopilotChatInline<cr>",
 			mode = "x",
 			desc = "CopilotChat - Inline chat",
 		},

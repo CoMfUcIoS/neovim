@@ -18,10 +18,10 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>rr", ":Rest run<CR>", desc = "Run Rest request under the cursor" },
-		{ "<leader>ro", ":Rest open<CR>", desc = "Open Rest result pane" },
-		{ "<leader>rp", ":Rest last<CR>", desc = "Run last Rest request" },
-		{ "<leader>rl", ":Rest logs<CR>", desc = "Edit Rest logs file" },
-		{ "<leader>rc", ":Rest cookies<CR>", desc = "Edit Rest cookies file" },
+		{ "<leader>rr", "<cmd>Rest run<CR>", desc = "Run Rest request under the cursor" },
+		{ "<leader>ro", "<cmd>Rest open<CR>", desc = "Open Rest result pane" },
+		{ "<leader>rp", "<cmd>Rest last<CR>", desc = "Run last Rest request" },
+		{ "<leader>rl", "<cmd>Rest logs<CR>", desc = "Edit Rest logs file" },
+		{ "<leader>rc", "<cmd>Rest cookies<CR>", desc = "Edit Rest cookies file" },
 	},
 }
