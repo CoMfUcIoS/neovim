@@ -1,5 +1,5 @@
 return {
-	"pocco81/auto-save.nvim",
+	"okuuva/auto-save.nvim",
 	lazy = false,
 	config = function()
 		local autoSave = require("auto-save")

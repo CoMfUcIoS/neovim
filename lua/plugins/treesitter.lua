@@ -50,6 +50,7 @@ return {
 				"ruby",
 				"diff",
 				"regex",
+				"http",
 			},
 			incremental_selection = {
 				enable = true,
