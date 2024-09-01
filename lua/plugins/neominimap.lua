@@ -32,6 +32,33 @@ return {
 				"help",
 				"http",
 			},
+			-- Minimap will not be created for buffers of these types
+			---@type string[]
+			exclude_buftypes = {
+				"nofile",
+				"nowrite",
+				"quickfix",
+				"terminal",
+				"prompt",
+			},
+			-- When false is returned, the minimap will not be created for this buffer
+			---@type fun(bufnr: integer): boolean
+			buf_filter = function()
+				-- if filetype is "http" then dont create a minimap
+				if vim.bo.filetype == "http" then
+					return false
+				end
+				return true
+			end,
+			-- When false is returned, the minimap will not be created for this window
+			---@type fun(winid: integer): boolean
+			win_filter = function()
+				-- if filetype is "http" then dont create a minimap
+				if vim.bo.filetype == "http" then
+					return false
+				end
+				return true
+			end,
 		}
 	end,
 }
