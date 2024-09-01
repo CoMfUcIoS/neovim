@@ -25,6 +25,13 @@ return {
 		---@type Neominimap.UserConfig
 		vim.g.neominimap = {
 			auto_enable = true,
+
+			-- Minimap will not be created for buffers of these types
+			---@type string[]
+			exclude_filetypes = {
+				"help",
+				"http",
+			},
 		}
 	end,
 }
