@@ -74,6 +74,7 @@ return {
 				"php-cs-fixer", -- php formatter
 				"phpstan", -- php linter
 				"prettier", -- prettier formatter
+				"yamlfix", -- yaml formatter
 				"stylua", -- lua formatter
 				"isort", -- python formatter
 				"black", -- python formatter
