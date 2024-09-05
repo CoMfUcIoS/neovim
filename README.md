@@ -89,6 +89,14 @@ bind-key -T copy-mode-vi 'M-Space' select-pane -t:.+
 
 Now you can use your Alt/Options key to navigate between tmux panes and nvim splits
 
+### Obsidian
+
+For obsidian (https://obsidian.md/) functionality and features in your neovim you need to install the following:
+
+```bash
+brew install pngpaste
+```
+
 ### Linux
 
 1. Install Neovim using your package manager. For Ubuntu, you can use:

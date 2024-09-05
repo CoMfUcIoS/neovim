@@ -46,7 +46,8 @@ return {
 				"rubocop",
 				-- "ruby_lsp",
 				"rust_analyzer",
-				"tsserver",
+				"tsserver", -- remove this when ts_ls is available through mason
+				"ts_ls",
 				"html",
 				"cssls",
 				"tailwindcss",
