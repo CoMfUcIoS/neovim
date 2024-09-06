@@ -6,6 +6,7 @@ return {
 		-- add any opts here
 		provider = "copilot",
 	},
+	build = "make",
 	keys = {
 		{
 			"<leader>za",
