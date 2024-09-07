@@ -9,6 +9,9 @@ return {
 		"hrsh7th/nvim-cmp",
 	},
 	opts = {
+		ui = {
+			enable = false,
+		},
 		workspaces = {
 			{
 				name = "Obsidian Vault",
