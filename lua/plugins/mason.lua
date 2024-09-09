@@ -47,7 +47,7 @@ return {
 				-- "ruby_lsp",
 				"rust_analyzer",
 				"tsserver", -- remove this when ts_ls is available through mason
-				"ts_ls",
+				-- "ts_ls", -- Add this when the above is removed
 				"html",
 				"cssls",
 				"tailwindcss",
