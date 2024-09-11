@@ -1,6 +1,7 @@
 return {
 	lazy = false,
 	"rest-nvim/rest.nvim",
+	dependencies = { "nvim-neotest/nvim-nio", "manoelcampos/xml2lua" },
 	config = function()
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = { "json" },
