@@ -1,11 +1,13 @@
 return {
 	"yetone/avante.nvim",
-	lazy = true,
+	event = "VeryLazy",
+	lazy = false,
+	version = false, -- set this if you want to always pull the latest change
 	opts = {
 		-- add any opts here
 		provider = "copilot",
 	},
-	build = "make BUILD_FROM_SOURCE=true",
+	build = "make",
 	keys = {
 		{
 			"<leader>za",
