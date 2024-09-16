@@ -11,6 +11,19 @@ return {
 		local telescope = require("telescope")
 
 		pomo.setup({
+			notifiers = {
+				{
+					name = "Default",
+					opts = {
+						sticky = false,
+
+						-- Configure the display icons:
+						title_icon = "󱎫",
+						text_icon = "󰄉",
+					},
+				},
+				{ name = "System" },
+			},
 			update_interval = 1000,
 			sessions = {
 				pomodoro = {
