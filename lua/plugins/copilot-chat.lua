@@ -235,6 +235,8 @@ return {
 			end,
 			desc = "CopilotChat - Quick chat",
 		},
+		-- Create documentation
+		{ "<leader>ao", "<cmd>CopilotChatDocs<cr>", desc = "CopilotCat - Draft documentation" },
 		-- Debug
 		{ "<leader>ad", "<cmd>CopilotChatDebugInfo<cr>", desc = "CopilotChat - Debug Info" },
 		-- Fix the issue with diagnostic
