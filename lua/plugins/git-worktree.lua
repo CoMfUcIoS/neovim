@@ -1,6 +1,7 @@
 return {
 	"polarmutex/git-worktree.nvim",
-	version = "^2",
+	-- version = "^2",
+	branch = "main",
 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	config = function()
 		local telescope = require("telescope")

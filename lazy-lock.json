@@ -50,7 +50,7 @@
   "fold_line.nvim": { "branch": "main", "commit": "b95cc69b9f7a525df7a35ad4b9bb2769143ba454" },
   "friendly-snippets": { "branch": "main", "commit": "00ba9dd3df89509f95437b8d595553707c46d5ea" },
   "fscreen.nvim": { "branch": "main", "commit": "9f4805a54ecdf16fffaf8491160f1effd128849b" },
-  "git-worktree.nvim": { "branch": "main", "commit": "9b5136bd9539805ba16ad0e92f3a021224c182d8" },
+  "git-worktree.nvim": { "branch": "main", "commit": "500629d0ad916ec362f53ecf21f84f3ba445f73e" },
   "github": { "branch": "main", "commit": "6b461635230ccb5d0037f378fbe05a27c4ccf7cd" },
   "gitsigns.nvim": { "branch": "main", "commit": "1ef74b546732f185d0f806860fa5404df7614f28" },
   "goto-preview": { "branch": "main", "commit": "1519ea3512828c944eed5b2bbb66a8f8deb92447" },
