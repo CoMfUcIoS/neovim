@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
 	"comfucios/pomo.nvim",
 	version = "*", -- Recommended, use latest release instead of latest commit
