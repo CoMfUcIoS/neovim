@@ -28,6 +28,9 @@ return {
 				["<C-P>"] = { "n", "x" },
 			},
 			disable_mouse = false,
+			max_time = 2000,
+			max_count = 5,
+			enabled = false,
 		})
 	end,
 }
