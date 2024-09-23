@@ -28,6 +28,7 @@ keymap.set("n", "<leader>si", "<C-w>k", { desc = "Navigate to Lower split" })
 keymap.set("n", "<leader>so", "<C-w>l", { desc = "Navigate to Right split" })
 
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
+keymap.set("n", "<leader>ta", "<cmd>tabonly<CR>", { desc = "Close all other tabs" }) -- close all other tabs
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
