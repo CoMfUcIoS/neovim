@@ -3,37 +3,28 @@ return {
 	version = "^2",
 	dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	config = function()
+		local telescope = require("telescope")
+		telescope.load_extension("git_worktree")
 		local Hooks = require("git-worktree.hooks")
-		Hooks.register(Hooks.type.SWITCH, Hooks.builtins.update_current_buffer_on_switch)
 
-		require("telescope").load_extension("git_worktree")
+		Hooks.register(Hooks.type.CREATE, function(path, prev_path)
+			if _G.worktree_create_callback ~= nil then
+				_G.worktree_create_callback(path, prev_path)
+			else
+				vim.notify("No git worktree callback", vim.log.levels.WARN)
+			end
+		end)
 
-		vim.api.nvim_set_keymap(
-			"n",
-			"<leader>gn",
-			[[:lua require('git-worktree').create_worktree(vim.fn.input('Worktree name: '), vim.fn.input('Branch name: '), vim.fn.input('Upstream: '))<CR>]],
-			{ noremap = true, silent = true, desc = "Create worktree" }
-		)
+		Hooks.register(Hooks.type.SWITCH, function(path, prev_path)
+			vim.notify("Moved:" .. prev_path .. "  ~>  " .. path)
+		end)
 
-		vim.api.nvim_set_keymap(
-			"n",
-			"<leader>gd",
-			[[:lua require('git-worktree').delete_worktree(vim.fn.input('Worktree name: '))<CR>]],
-			{ noremap = true, silent = true, desc = "Delete worktree" }
-		)
+		vim.keymap.set("n", "<leader>gw", function()
+			require("telescope").extensions.git_worktree.git_worktree()
+		end, { desc = "worktree_switch" })
 
-		vim.api.nvim_set_keymap(
-			"n",
-			"<leader>gs",
-			[[:lua require('git-worktree').switch_worktree(vim.fn.input('Worktree name: '))<CR>]],
-			{ noremap = true, silent = true, desc = "Switch worktree" }
-		)
-
-		vim.api.nvim_set_keymap(
-			"n",
-			"<leader>gw",
-			":lua require('telescope').extensions.git_worktree.git_worktree()<CR>",
-			{ noremap = true, silent = true, desc = "List Worktrees" }
-		)
+		vim.keymap.set("n", "<leader>gW", function()
+			require("telescope").extensions.git_worktree.create_git_worktree()
+		end, { desc = "worktree_create" })
 	end,
 }
