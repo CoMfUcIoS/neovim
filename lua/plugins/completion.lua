@@ -26,9 +26,17 @@ return {
 	},
 	{
 		"supermaven-inc/supermaven-nvim",
-		config = function()
-			require("supermaven-nvim").setup({})
-		end,
+		opts = {
+			log_level = "warn",
+			disable_keymaps = true,
+			disable_inline_completion = true,
+			condition = function()
+				return false
+			end,
+		},
+	},
+	{
+		"folke/lazydev.nvim",
 	},
 	-- {
 	-- 	"zbirenbaum/copilot.lua",
@@ -132,7 +140,12 @@ return {
 					--   i = cmp.mapping.complete(),
 					-- }),
 				},
+				performance = {
+					debounce = 0,
+					throttle = 0,
+				},
 				sources = {
+					{ name = "lazydev", group_index = 1 },
 					{ name = "supermaven" },
 					-- { name = "copilot" },
 					-- { name = "codeium" },
