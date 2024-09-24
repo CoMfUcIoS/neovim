@@ -218,7 +218,7 @@ return {
 						-- entries = true,
 						entries = { name = "custom", selection_order = "near_cursor" },
 					},
-					ghost_text = true,
+					-- ghost_text = true,
 				},
 			})
 			-- vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
