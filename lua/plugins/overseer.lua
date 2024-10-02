@@ -1,4 +1,5 @@
 return {
+	{ "akinsho/toggleterm.nvim", version = "*", config = true },
 	{
 		"stevearc/overseer.nvim",
 		lazy = true,
@@ -26,7 +27,27 @@ return {
 		config = function()
 			require("overseer").setup({
 				-- Default task strategy
-				strategy = "terminal",
+				strategy = {
+					"toggleterm",
+					-- load your default shell before starting the task
+					use_shell = false,
+					size = 10,
+					-- overwrite the default toggleterm "direction" parameter
+					direction = "horizontal",
+					-- have the toggleterm window close and delete the terminal buffer
+					-- automatically after the task exits
+					close_on_exit = true,
+					-- have the toggleterm window close without deleting the terminal buffer
+					-- automatically after the task exits
+					-- can be "never, "success", or "always". "success" will close the window
+					-- only if the exit code is 0.
+					quit_on_exit = "success",
+					-- open the toggleterm window when a task starts
+					open_on_start = true,
+					-- mirrors the toggleterm "hidden" parameter, and keeps the task from
+					-- being rendered in the toggleable window
+					hidden = false,
+				},
 				-- Template modules to load
 				templates = { "builtin" },
 				-- When true, tries to detect a green color from your colorscheme to use for success highlight
