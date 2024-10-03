@@ -143,6 +143,10 @@ return {
 				performance = {
 					debounce = 0,
 					throttle = 0,
+					fetching_timeout = 200,
+					confirm_resolve_timeout = 80,
+					async_budget = 1,
+					max_view_entries = 10,
 				},
 				sources = {
 					{ name = "lazydev", group_index = 1 },
@@ -186,12 +190,12 @@ return {
 					},
 				},
 				formatting = {
+					fields = { "abbr", "kind", "menu" },
+					expandable_indicator = true,
 					format = lspkind.cmp_format({
 						mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+						maxwidth = 50, -- prevent the popup from showing more than provided characters
 						ellipsis_char = "...", -- the character to show ellipsis in place of omitted part (default is '...')
-						-- The function below will be called before any actual modifications from lspkind
-						-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
 						before = function(entry, vim_item)
 							vim_item.kind = lspkind.presets.default[vim_item.kind]
 
@@ -218,7 +222,7 @@ return {
 						-- entries = true,
 						entries = { name = "custom", selection_order = "near_cursor" },
 					},
-					-- ghost_text = true,
+					ghost_text = false,
 				},
 			})
 			-- vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })

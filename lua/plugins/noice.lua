@@ -4,6 +4,28 @@ return {
 	config = function()
 		require("notify").setup({
 			background_colour = "#000000",
+			level = "info",
+			timeout = 5000,
+			max_width = 80,
+			max_height = 20,
+			stages = "fade_in_slide_out",
+			icons = {
+				ERROR = "",
+				WARN = "",
+				INFO = "",
+				DEBUG = "",
+				TRACE = "✎",
+			},
+			time_formats = {
+				"%H:%M:%S",
+				"%H:%M",
+			},
+			on_open = function() end,
+			on_close = function() end,
+			render = "default",
+			minimum_width = 50,
+			fps = 30,
+			top_down = true,
 		})
 		require("noice").setup({
 			lsp = {
