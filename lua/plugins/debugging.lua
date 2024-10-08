@@ -49,12 +49,11 @@ return {
 							{ id = "watches", size = 0.25 },
 						},
 						position = "left",
-						size = 35,
+						size = 30,
 					},
 					{
 						elements = {
-							{ id = "repl", size = 0.5 },
-							{ id = "console", size = 0.5 },
+							{ id = "console", size = 1 },
 						},
 						position = "bottom",
 						size = 10,
