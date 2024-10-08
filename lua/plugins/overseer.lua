@@ -33,7 +33,7 @@ return {
 					use_shell = false,
 					size = 10,
 					-- overwrite the default toggleterm "direction" parameter
-					direction = "horizontal",
+					direction = "tab",
 					-- have the toggleterm window close and delete the terminal buffer
 					-- automatically after the task exits
 					close_on_exit = true,
