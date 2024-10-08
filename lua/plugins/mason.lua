@@ -55,16 +55,22 @@ return {
 				"graphql",
 				"emmet_ls",
 				"prismals",
+				"ruff-lsp",
 				"pyright",
 				"markdown_oxide",
 				"intelephense",
+				"json_lsp",
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
+				"debugpy",
+				"firefox-debug-adapter",
 				"php-debug-adapter",
+				"mypy",
 				"black", -- python formatter
+				"gomodifytags",
 				"gofumpt", -- go formatter
 				"goimports", -- go formatter
 				"golines", -- go formatter
@@ -73,7 +79,8 @@ return {
 				"markdownlint", -- markdown linter
 				"php-cs-fixer", -- php formatter
 				"phpstan", -- php linter
-				"prettier", -- prettier formatter
+				"prettierd", -- prettier formatter
+				"prettier",
 				"yamlfix", -- yaml formatter
 				"stylua", -- lua formatter
 				"isort", -- python formatter

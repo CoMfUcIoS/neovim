@@ -119,8 +119,16 @@ return {
 			desc = "Toggle Breakpoint",
 		},
 		{
+			"<leader>dq",
+			function()
+				require("dap").clear_breakpoints()
+			end,
+			desc = "Clear Breakpoints",
+		},
+		{
 			"<leader>dc",
 			function()
+				require("dap.ext.vscode").load_launchjs(nil, vscode_type_to_ft)
 				require("dap").continue()
 			end,
 			desc = "Continue",
@@ -198,7 +206,7 @@ return {
 		{
 			"<leader>dr",
 			function()
-				require("dap").repl.toggle()
+				require("dap").repl.toggle({ wrap = false }, "belowright vsplit")
 			end,
 			desc = "Toggle REPL",
 		},
@@ -232,7 +240,7 @@ return {
 			Breakpoint = { " ", "DiagnosticSignInfo" },
 			BreakpointCondition = { " ", "DiagnosticSignHint" },
 			BreakpointRejected = { " ", "DiagnosticSignError" },
-			LogPoint = ".>",
+			LogPoint = "",
 		}
 		require("dap-go").setup({
 			delve = {
