@@ -55,19 +55,19 @@ return {
 				"graphql",
 				"emmet_ls",
 				"prismals",
-				"ruff-lsp",
 				"pyright",
 				"markdown_oxide",
 				"intelephense",
-				"json_lsp",
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"debugpy",
+				"json-lsp",
 				"firefox-debug-adapter",
 				"php-debug-adapter",
+				"ruff-lsp",
 				"mypy",
 				"black", -- python formatter
 				"gomodifytags",
