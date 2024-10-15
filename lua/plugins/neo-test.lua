@@ -15,6 +15,28 @@ return {
 			"marilari88/neotest-vitest",
 			"nvim-neotest/neotest-jest",
 		},
+		keys = {
+			{ "<leader>tta", "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<cr>", desc = "[T]est [a]ll" },
+			{
+				"<leader>ttf",
+				"<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",
+				desc = "[T]est current [f]ile",
+			},
+			{ "<leader>ttn", "<cmd>lua require('neotest').run.run()<cr>", desc = "[T]est nearest test" },
+			{ "<leader>ttx", "<cmd>lua require('neotest').run.stop()<cr>", desc = "Stop test" },
+			{ "<leader>ttl", "<cmd>lua require('neotest').run.run_last()<cr>", desc = "Run last test" },
+			{
+				"<leader>ttdn",
+				"<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+				desc = "[T]est debug nearest test",
+			},
+			{
+				"<leader>tts",
+				"<cmd>lua require('neotest').summary.toggle({ enter = true })<cr>",
+				desc = "toggle summary",
+			},
+			{ "<leader>tto", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "toggle output panel" },
+		},
 		config = function()
 			require("neotest").setup({
 				adapters = {
