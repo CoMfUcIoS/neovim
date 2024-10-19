@@ -384,10 +384,11 @@ return {
 				},
 			}
 		end
-
+		local php_debug_adapt_path = require("mason-registry").get_package("php-debug-adapter"):get_install_path()
 		dap.adapters.php = {
 			type = "executable",
-			command = "php-debug-adapter",
+			command = "node",
+			args = { php_debug_adapt_path .. "/out/phpDebug.js" },
 		}
 
 		dap.configurations.php = {

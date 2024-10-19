@@ -78,6 +78,7 @@ return {
 				"isort", -- python formatter
 				"markdownlint", -- markdown linter
 				"php-cs-fixer", -- php formatter
+				"phpcs",
 				"phpstan", -- php linter
 				"prettierd", -- prettier formatter
 				"prettier",
