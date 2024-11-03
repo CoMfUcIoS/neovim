@@ -25,6 +25,8 @@ return {
 		{ "nvim-telescope/telescope.nvim" }, -- for telescope integration
 	},
 	opts = {
+		model = "gpt-4o-2024-08-06",
+		context = "buffer",
 		question_header = "## User ",
 		answer_header = "## Copilot ",
 		error_header = "## Error ",
