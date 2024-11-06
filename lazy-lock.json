@@ -7,6 +7,7 @@
   "LuaSnip": { "branch": "master", "commit": "03c8e67eb7293c404845b3982db895d59c0d1538" },
   "abstract-cs": { "branch": "main", "commit": "c35d6187cc8c9208961d92e07155422fbeb08012" },
   "adwaita": { "branch": "main", "commit": "c9379097755701ab597140bafd097fbaff3dd517" },
+  "aider.nvim": { "branch": "main", "commit": "74a01227271d0ea211f2edafa82028b22d4c2022" },
   "alpha-nvim": { "branch": "main", "commit": "bf3c8bb8c02ed3d9644cc5bbc48e2bdc39349cd7" },
   "aquarium": { "branch": "develop", "commit": "d09b1feda1148797aa5ff0dbca8d8e3256d028d5" },
   "ariake": { "branch": "main", "commit": "47136b18d02954d12cedf63f24000a950b6478d5" },
