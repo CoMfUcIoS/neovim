@@ -67,7 +67,7 @@ return {
 				"json-lsp",
 				"firefox-debug-adapter",
 				"php-debug-adapter",
-				"ruff-lsp",
+				"ruff",
 				"mypy",
 				"black", -- python formatter
 				"gomodifytags",

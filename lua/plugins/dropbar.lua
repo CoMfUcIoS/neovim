@@ -14,8 +14,8 @@ return {
 		},
 		config = function()
 			local opts = {
-				general = {
-					update_interval = 0,
+				bar = {
+					update_debounce = 0,
 					attach_events = {
 						"OptionSet",
 						"BufWinEnter",
