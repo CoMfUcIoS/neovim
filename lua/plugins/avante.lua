@@ -4,7 +4,7 @@ return {
 	lazy = false,
 	version = false, -- set this if you want to always pull the latest change
 	config = function()
-		local useClaude = string.match(vim.fn.system("echo -n $HOST"), "^MacBook-Pro.local")
+		local useClaude = string.match(vim.fn.system("echo -n $HOST"), "^MacBook-Pro")
 		local opts = {
 			-- The default provider is "copilot"
 			provider = "copilot",
@@ -14,6 +14,11 @@ return {
 				auto_set_keymaps = true,
 				auto_apply_diff_after_generation = false,
 				support_paste_from_clipboard = false,
+			},
+			mappings = {
+				ask = "<leader>za", -- ask
+				edit = "<leader>ze", -- edit
+				refresh = "<leader>zr", -- refresh
 			},
 		}
 		if useClaude then
@@ -28,31 +33,6 @@ return {
 		require("avante").setup(opts)
 	end,
 	build = "make BUILD_FROM_SOURCE=true",
-	keys = {
-		{
-			"<leader>za",
-			function()
-				require("avante.api").ask()
-			end,
-			desc = "avante: ask",
-			mode = { "n", "v" },
-		},
-		{
-			"<leader>zr",
-			function()
-				require("avante.api").refresh()
-			end,
-			desc = "avante: refresh",
-		},
-		{
-			"<leader>ze",
-			function()
-				require("avante.api").edit()
-			end,
-			desc = "avante: edit",
-			mode = "v",
-		},
-	},
 	dependencies = {
 		"stevearc/dressing.nvim",
 		"nvim-lua/plenary.nvim",
