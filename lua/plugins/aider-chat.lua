@@ -11,7 +11,7 @@ return {
 		{
 			"<leader>aw",
 			function()
-				require("aider").AiderOpen(" --model xai/grok-beta")
+				require("aider").AiderOpen(" --no-auto-commits --model xai/grok-beta")
 			end,
 			desc = "Aider Open",
 		},
