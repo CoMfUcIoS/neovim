@@ -388,7 +388,7 @@ return {
 		dap.adapters.php = {
 			type = "executable",
 			command = "node",
-			args = { php_debug_adapt_path .. "/out/phpDebug.js" },
+			args = { php_debug_adapt_path .. "/extension/out/phpDebug.js" },
 		}
 
 		dap.configurations.php = {
