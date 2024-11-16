@@ -29,24 +29,25 @@ function M.setup(passed_opts)
 		},
 	})
 
-	vim.api.nvim_create_autocmd({ "FileType" }, {
+	vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 		group = vim.api.nvim_create_augroup("bigfile_group", { clear = true }),
-		pattern = "bigfile",
 		callback = function(ev)
-			if opts.notify then
-				local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(ev.buf), ":p:~:.")
-				vim.notify(
-					("Big file detected `%s`. Some Neovim features have been **disabled**."):format(path),
-					vim.log.levels.WARN,
-					{ title = "Big File" }
-				)
+			local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(ev.buf), ":p:~:.")
+			if vim.bo[ev.buf].filetype == "bigfile" then
+				if opts.notify then
+					vim.notify(
+						("Big file detected `%s`. Some Neovim features have been **disabled**."):format(path),
+						vim.log.levels.WARN,
+						{ title = "Big File" }
+					)
+				end
+				vim.api.nvim_buf_call(ev.buf, function()
+					opts.setup({
+						buf = ev.buf,
+						ft = vim.filetype.match({ buf = ev.buf }) or "",
+					})
+				end)
 			end
-			vim.api.nvim_buf_call(ev.buf, function()
-				opts.setup({
-					buf = ev.buf,
-					ft = vim.filetype.match({ buf = ev.buf }) or "",
-				})
-			end)
 		end,
 	})
 end

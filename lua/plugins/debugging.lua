@@ -392,21 +392,35 @@ return {
 		}
 
 		dap.configurations.php = {
+			-- to run php right from the editor
 			{
+				name = "run current script",
 				type = "php",
 				request = "launch",
-				name = "Listen for Xdebug",
 				port = 9003,
-				stopOnEntry = true,
+				cwd = "${fileDirname}",
+				program = "${file}",
+				runtimeExecutable = "php",
+			},
+			-- to listen to any php call
+			{
+				name = "listen for Xdebug local",
+				type = "php",
+				request = "launch",
+				port = 9003,
+			},
+			-- to listen to php call in docker container
+			{
+				name = "listen for Xdebug docker",
+				type = "php",
+				request = "launch",
+				port = 9003,
+				-- this is where your file is in the container
 				pathMappings = {
-					{
-						localRoot = "${workspaceFolder}",
-						remoteRoot = "/var/www/html",
-					},
+					["/usr/local/apache2/htdocs/"] = "${workspaceFolder}",
 				},
 			},
 		}
-
 		-- Lua configurations.
 		-- 1. Open a Neovim instance (instance A)
 		-- 2. Launch the DAP server with (A) >
