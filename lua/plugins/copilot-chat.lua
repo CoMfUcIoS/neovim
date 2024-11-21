@@ -31,6 +31,7 @@ return {
 		answer_header = "## Copilot ",
 		error_header = "## Error ",
 		prompts = prompts,
+		chat_autocomplete = true, -- Enable chat autocompletion (when disabled, requires manual `mappings.complete` trigger),
 		auto_follow_cursor = false, -- Don't follow the cursor after getting response
 		show_help = false, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
 		mappings = {
@@ -84,20 +85,19 @@ return {
 		opts.selection = select.unnamed
 
 		-- Override the git prompts message
-		opts.prompts.Commit = {
-			prompt = "Write commit message for the change with commitizen convention",
+		opts.prompts.CopilotChatCommit = {
+			prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
 			selection = select.gitdiff,
 		}
-		opts.prompts.CommitStaged = {
-			prompt = "Write commit message for the change with commitizen convention",
-			selection = function(source)
-				return select.gitdiff(source, true)
+		opts.prompts.CopilotChatCommit = {
+			prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+			selection = function()
+				return select.gitdiff(true)
 			end,
 		}
-
 		chat.setup(opts)
 		-- Setup the CMP integration
-		require("CopilotChat.integrations.cmp").setup()
+		-- require("CopilotChat.integrations.cmp").setup()
 
 		vim.api.nvim_create_user_command("CopilotChatVisual", function(args)
 			chat.ask(args.args, { selection = select.visual })
@@ -222,7 +222,7 @@ return {
 		},
 		{
 			"<leader>aM",
-			"<cmd>CopilotChatCommitStaged<cr>",
+			"<cmd>CopilotChatCommit<cr>",
 			desc = "CopilotChat - Generate commit message for staged changes",
 		},
 		-- Quick chat with Copilot
