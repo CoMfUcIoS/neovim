@@ -321,6 +321,7 @@ return {
 				{ "<C-g>wv", "<cmd>GpWhisperVnew<cr>", desc = "[W]hisper Vnew" },
 				{ "<C-g>ww", "<cmd>GpWhisper<cr>", desc = "[W]hisper" },
 				{ "<C-g>x", "<cmd>GpContext<cr>", desc = "Toggle GpContext" },
+				{ "<C-g>C", "<cmd>GpCommitizen<cr>", desc = "Commitizen" },
 			},
 
 			-- INSERT mode mappings
