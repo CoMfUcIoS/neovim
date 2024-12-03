@@ -2,7 +2,7 @@
   "15puzzle.nvim": { "branch": "main", "commit": "1baa651ac681565f6fa0c5d0af20a4a1d03e9638" },
   "2048.nvim": { "branch": "main", "commit": "aee7c41a9a9473117465132768ae4b4da97435c3" },
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
-  "CopilotChat.nvim": { "branch": "canary", "commit": "451d365928a994cda3505a84905303f790e28df8" },
+  "CopilotChat.nvim": { "branch": "main", "commit": "86bdee82848955641e14930e0593820cf9b161bf" },
   "FixCursorHold.nvim": { "branch": "master", "commit": "1900f89dc17c603eec29960f57c00bd9ae696495" },
   "LuaSnip": { "branch": "master", "commit": "03c8e67eb7293c404845b3982db895d59c0d1538" },
   "aider.nvim": { "branch": "main", "commit": "74a01227271d0ea211f2edafa82028b22d4c2022" },

@@ -3,8 +3,11 @@ return {
 	event = "VeryLazy",
 	lazy = false,
 	version = false, -- set this if you want to always pull the latest change
+	keys = {
+		{ "<leader>zt", "<cmd>AvanteToggleProvider<cr>", { desc = "Toggle Avante provider" } },
+		{ "<leader>zp", "<cmd>AvanteProvider<cr>", { desc = "Show Avante provider" } },
+	},
 	config = function()
-		local useClaude = string.match(vim.fn.system("echo -n $HOST"), "MacBook-Pro.local")
 		local opts = {
 			-- The default provider is "copilot"
 			provider = "copilot",
@@ -21,15 +24,35 @@ return {
 				refresh = "<leader>zr", -- refresh
 			},
 		}
-		if useClaude then
-			opts.provider = "claude"
-			opts.claude = {
-				endpoint = "https://api.anthropic.com",
-				model = "claude-3-5-sonnet-20241022",
-				temperature = 0,
-				max_tokens = 4096,
-			}
+
+		local function notify_provider()
+			vim.notify("Current provider: " .. opts.provider)
 		end
+
+		local function toggle_provider()
+			if opts.provider == "copilot" then
+				opts.provider = "claude"
+				opts.claude = {
+					endpoint = "https://api.anthropic.com",
+					model = "claude-3-5-sonnet-20241022",
+					temperature = 0,
+					max_tokens = 4096,
+				}
+			else
+				opts.provider = "copilot"
+			end
+			require("avante").setup(opts)
+			notify_provider()
+		end
+
+		vim.api.nvim_create_user_command("AvanteToggleProvider", function()
+			toggle_provider()
+		end, {})
+
+		vim.api.nvim_create_user_command("AvanteProvider", function()
+			notify_provider()
+		end, {})
+
 		require("avante").setup(opts)
 	end,
 	build = "make BUILD_FROM_SOURCE=true",

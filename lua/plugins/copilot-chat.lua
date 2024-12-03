@@ -19,7 +19,7 @@ local prompts = {
 
 return {
 	"CopilotC-Nvim/CopilotChat.nvim",
-	branch = "canary",
+	branch = "main",
 	dependencies = {
 		{ "Nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		{ "nvim-telescope/telescope.nvim" }, -- for telescope integration
@@ -69,11 +69,11 @@ return {
 				normal = "gmd",
 			},
 			-- Show the prompt
-			show_system_prompt = {
+			show_info = {
 				normal = "gmp",
 			},
 			-- Show the user selection
-			show_user_selection = {
+			show_context = {
 				normal = "gms",
 			},
 		},
