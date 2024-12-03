@@ -8,8 +8,20 @@ return {
 		{ "<leader>zp", "<cmd>AvanteProvider<cr>", { desc = "Show Avante provider" } },
 	},
 	config = function()
+		-- Provider configurations
+		local provider_configs = {
+			copilot = {}, -- copilot doesn't need special config
+			claude = {
+				endpoint = "https://api.anthropic.com",
+				model = "claude-3-5-sonnet-20241022",
+				temperature = 0,
+				max_tokens = 4096,
+			},
+		}
+
+		-- Base configuration
 		local opts = {
-			-- The default provider is "copilot"
+
 			provider = "copilot",
 			behaviour = {
 				auto_suggestions = false, -- Experimental stage
@@ -25,34 +37,30 @@ return {
 			},
 		}
 
+		-- Provider management functions
 		local function notify_provider()
-			vim.notify("Current provider: " .. opts.provider)
+			vim.notify("Current provider: " .. opts.provider, vim.log.levels.INFO)
 		end
 
-		local function toggle_provider()
-			if opts.provider == "copilot" then
-				opts.provider = "claude"
-				opts.claude = {
-					endpoint = "https://api.anthropic.com",
-					model = "claude-3-5-sonnet-20241022",
-					temperature = 0,
-					max_tokens = 4096,
-				}
-			else
-				opts.provider = "copilot"
+		local function set_provider(provider_name)
+			opts.provider = provider_name
+			if provider_configs[provider_name] then
+				opts[provider_name] = provider_configs[provider_name]
 			end
 			require("avante").setup(opts)
 			notify_provider()
 		end
 
-		vim.api.nvim_create_user_command("AvanteToggleProvider", function()
-			toggle_provider()
-		end, {})
+		local function toggle_provider()
+			local next_provider = opts.provider == "copilot" and "claude" or "copilot"
+			set_provider(next_provider)
+		end
 
-		vim.api.nvim_create_user_command("AvanteProvider", function()
-			notify_provider()
-		end, {})
+		-- Create commands
+		vim.api.nvim_create_user_command("AvanteToggleProvider", toggle_provider, {})
+		vim.api.nvim_create_user_command("AvanteProvider", notify_provider, {})
 
+		-- Initial setup
 		require("avante").setup(opts)
 	end,
 	build = "make BUILD_FROM_SOURCE=true",
