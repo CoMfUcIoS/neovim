@@ -4,7 +4,7 @@ return {
 	lazy = false,
 	version = false, -- set this if you want to always pull the latest change
 	config = function()
-		local useClaude = string.match(vim.fn.system("echo -n $HOST"), "^MacBook-Pro")
+		local useClaude = string.match(vim.fn.system("echo -n $HOST"), "MacBook-Pro.local")
 		local opts = {
 			-- The default provider is "copilot"
 			provider = "copilot",
