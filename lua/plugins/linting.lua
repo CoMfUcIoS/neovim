@@ -5,11 +5,6 @@ return {
 		local lint = require("lint")
 
 		lint.linters_by_ft = {
-			javascript = { "eslint_d" },
-			javascriptreact = { "eslint_d" },
-			typescript = { "eslint_d" },
-			typescriptreact = { "eslint_d" },
-			svelte = { "eslint_d" },
 			python = { "mypy", "pylint" },
 			go = { "golangcilint" },
 			sh = { "shellcheck" },
@@ -25,7 +20,6 @@ return {
 		vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
 			group = lint_augroup,
 			callback = function()
-				print("Linting file: " .. vim.fn.expand("%"))
 				lint.try_lint()
 			end,
 		})
