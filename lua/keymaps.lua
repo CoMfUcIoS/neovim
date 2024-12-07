@@ -57,13 +57,6 @@ keymap.set("n", "<leader>SS", ":%s/\\v", { desc = "search and replace in file" }
 keymap.set("n", "<leader>yf", "<cmd>%y<cr>", { desc = "yank current file to the clipboard buffer" })
 keymap.set("n", "<leader>df", "<cmd>%d_<cr>", { desc = "delete file content to black hole register" })
 keymap.set("n", "<leader>sa", "ggVG", { desc = "select all" })
-
-keymap.set({ "n", "v" }, "<leader>gbf", "<cmd>GBrowse<cr>", { desc = "Git browse current file in browser" })
-keymap.set("n", "<leader>gbc", "<cmd>GBrowse!<cr>", { desc = "Copy URL to current file" })
-keymap.set("v", "<leader>gbl", function()
-	local range = getSelectedRange()
-	vim.cmd(range .. "GBrowse ")
-end, { desc = "Git browse current file and selected line in browser" })
 keymap.set("v", "<leader>gbc", function()
 	local range = getSelectedRange()
 	vim.cmd(range .. "GBrowse!")

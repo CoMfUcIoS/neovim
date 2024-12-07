@@ -2,31 +2,6 @@ return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
 	config = function()
-		require("notify").setup({
-			background_colour = "#000000",
-			level = "info",
-			timeout = 5000,
-			max_width = 80,
-			max_height = 20,
-			stages = "fade_in_slide_out",
-			icons = {
-				ERROR = "",
-				WARN = "",
-				INFO = "",
-				DEBUG = "",
-				TRACE = "✎",
-			},
-			time_formats = {
-				"%H:%M:%S",
-				"%H:%M",
-			},
-			on_open = function() end,
-			on_close = function() end,
-			render = "default",
-			minimum_width = 50,
-			fps = 30,
-			top_down = true,
-		})
 		require("noice").setup({
 			lsp = {
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -68,6 +43,6 @@ return {
 		-- OPTIONAL:
 		-- "nvim-notify", -- is only needed, if you want to use the notification view.
 		--   If not available, we use `mini` as the fallback
-		"rcarriga/nvim-notify",
+		-- "rcarriga/nvim-notify",
 	},
 }

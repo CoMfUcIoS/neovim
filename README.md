@@ -35,11 +35,10 @@ brew install neovim
 
 for images to work properly, install the following:
 
-1. Install `kitty` terminal
+1. Install `kitty` terminal plus some dependencies
 
 ````bash
-brew install imagemagick
-brew install luarocks
+brew install luarocks kitty gh hub imagemagick
 luarocks --local --lua-version=5.1 install magick
 ```
 If you use Tmux, ~/Tmux.conf should have set -gq allow-passthrough on
