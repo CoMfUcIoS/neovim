@@ -125,7 +125,7 @@ return {
 								vim.fn.jobstart("gh issue list --web", { detach = true })
 							end,
 							icon = " ",
-							height = 7,
+							height = 10,
 						},
 						{
 							icon = " ",
@@ -135,7 +135,7 @@ return {
 							action = function()
 								vim.fn.jobstart("gh pr list --web", { detach = true })
 							end,
-							height = 7,
+							height = 10,
 						},
 						{
 							icon = " ",
