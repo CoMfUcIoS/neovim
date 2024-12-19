@@ -29,12 +29,21 @@ return {
 				auto_set_keymaps = true,
 				auto_apply_diff_after_generation = false,
 				support_paste_from_clipboard = false,
+				minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
 			},
 			mappings = {
 				ask = "<leader>za", -- ask
 				edit = "<leader>ze", -- edit
 				refresh = "<leader>zr", -- refresh
 			},
+			dual_boost = {
+				enabled = false,
+				first_provider = "copilot",
+				second_provider = "claude",
+				prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+				timeout = 60000, -- Timeout in milliseconds
+			},
+			hints = { enabled = true },
 		}
 
 		-- Provider management functions
@@ -70,6 +79,7 @@ return {
 		"MunifTanjim/nui.nvim",
 		--- The below dependencies are optional,
 		"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+		"zbirenbaum/copilot.lua", -- for providers='copilot'
 		{
 			-- support for image pasting
 			"HakonHarnes/img-clip.nvim",

@@ -51,10 +51,7 @@ return {
 			},
 			filters = {
 				custom = { ".git$", "node_modules" },
-				dotfiles = false,
-				-- custom = { ".DS_Store", ".git" },
-				-- exclude = { ".github" },
-				-- dotfiles = false,
+				git_ignored = false,
 			},
 		})
 
