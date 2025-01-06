@@ -3,6 +3,14 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
+		{
+			-- Make sure to setup it properly if you have lazy=true
+			"MeanderingProgrammer/render-markdown.nvim",
+			opts = {
+				file_types = { "markdown", "codecompanion" },
+			},
+			ft = { "markdown", "codecompanion" },
+		},
 	},
 	config = function()
 		require("codecompanion").setup({})
@@ -10,8 +18,8 @@ return {
 		local keymaps = {
 			{ "n", "<C-a>", "<cmd>CodeCompanionActions<cr>" },
 			{ "v", "<C-a>", "<cmd>CodeCompanionActions<cr>" },
-			{ "n", "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>" },
-			{ "v", "<leader>zz", "<cmd>CodeCompanionChat Toggle<cr>" },
+			{ "n", "<leader>zb", "<cmd>CodeCompanionChat Toggle<cr>" },
+			{ "v", "<leader>zb", "<cmd>CodeCompanionChat Toggle<cr>" },
 			{ "v", "ga", "<cmd>CodeCompanionChat Add<cr>" },
 		}
 

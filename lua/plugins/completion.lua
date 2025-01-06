@@ -169,6 +169,7 @@ return {
 							end,
 						},
 					},
+					{ name = "codecompanion" },
 				},
 				sorting = {
 					priority_weight = 2,
