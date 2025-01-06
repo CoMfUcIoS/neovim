@@ -6,7 +6,7 @@ return {
 
 		lint.linters_by_ft = {
 			python = { "mypy", "pylint" },
-			go = { "golangcilint" },
+			go = { "golangci_lint_ls" },
 			sh = { "shellcheck" },
 			puppet = { "puppet-lint" },
 			ruby = { "rubocop" },

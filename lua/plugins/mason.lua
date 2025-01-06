@@ -74,7 +74,6 @@ return {
 				"gofumpt", -- go formatter
 				"goimports", -- go formatter
 				"golines", -- go formatter
-				"golangci-lint", -- go linter
 				"isort", -- python formatter
 				"markdownlint", -- markdown linter
 				"php-cs-fixer", -- php formatter

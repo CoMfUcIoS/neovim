@@ -6,7 +6,9 @@ return {
 	event = "UIEnter",
 	ensure = {},
 	config = function()
-		require("huez").setup({})
+		require("huez").setup({
+			theme_config_module = "modules.themes",
+		})
 		local pickers = require("huez.pickers")
 
 		vim.keymap.set("n", "<leader>cop", pickers.themes, { desc = "Colorscheme" })

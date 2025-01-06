@@ -136,7 +136,6 @@ return {
 								checkThirdParty = false,
 								library = {
 									vim.env.VIMRUNTIME,
-									"~/.local/share/nvim/lazy/dracula",
 								},
 							},
 							hint = {
