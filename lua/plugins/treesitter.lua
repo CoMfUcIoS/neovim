@@ -25,10 +25,10 @@ return {
 			ensure_installed = {
 				"jsonc",
 				"json",
+				"go",
 				"javascript",
 				"typescript",
 				"tsx",
-				"go",
 				"yaml",
 				"php",
 				"html",

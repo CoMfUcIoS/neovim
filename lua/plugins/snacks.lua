@@ -78,6 +78,12 @@ return {
 							Snacks.gitbrowse()
 						end,
 					},
+					{
+						icon = " ",
+						desc = "Healthcheck",
+						key = "H",
+						action = ":checkhealth",
+					},
 					{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 				},
 				-- Used by the `header` section
