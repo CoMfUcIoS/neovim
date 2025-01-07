@@ -39,8 +39,8 @@ return {
 				"cmake",
 				"docker_compose_language_service",
 				"dockerls",
-				"golangci_lint_ls",
 				"gopls",
+				"golangci_lint_ls",
 				"grammarly",
 				"puppet",
 				"rubocop",
@@ -70,9 +70,9 @@ return {
 				"ruff",
 				"mypy",
 				"black", -- python formatter
-				"gomodifytags",
 				"gofumpt", -- go formatter
 				"goimports", -- go formatter
+				"gomodifytags",
 				"golines", -- go formatter
 				"isort", -- python formatter
 				"markdownlint", -- markdown linter

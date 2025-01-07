@@ -85,6 +85,19 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+			["gopls"] = function()
+				lspconfig["gopls"].setup({
+					settings = {
+						gopls = {
+							analyses = {
+								unusedparams = true,
+							},
+							staticcheck = true,
+							gofumpt = true,
+						},
+					},
+				})
+			end,
 			["svelte"] = function()
 				-- configure svelte server
 				lspconfig["svelte"].setup({
