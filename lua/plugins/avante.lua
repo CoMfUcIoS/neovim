@@ -4,8 +4,8 @@ return {
 	lazy = false,
 	version = false, -- set this if you want to always pull the latest change
 	keys = {
-		{ "<leader>zt", "<cmd>AvanteToggleProvider<cr>", { desc = "Toggle Avante provider" } },
-		{ "<leader>zp", "<cmd>AvanteProvider<cr>", { desc = "Show Avante provider" } },
+		{ "<leader>aT", "<cmd>AvanteToggleProvider<cr>", { desc = "Toggle Avante provider" } },
+		{ "<leader>ap", "<cmd>AvanteProvider<cr>", { desc = "Show Avante provider" } },
 	},
 	config = function()
 		-- Provider configurations
@@ -32,9 +32,9 @@ return {
 				minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
 			},
 			mappings = {
-				ask = "<leader>za", -- ask
-				edit = "<leader>ze", -- edit
-				refresh = "<leader>zr", -- refresh
+				ask = "<leader>aa", -- ask
+				edit = "<leader>ae", -- edit
+				refresh = "<leader>ar", -- refresh
 			},
 			dual_boost = {
 				enabled = false,
