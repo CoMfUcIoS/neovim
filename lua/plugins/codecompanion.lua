@@ -169,19 +169,24 @@ return {
 		})
 
 		local keymaps = {
-			{ "n", "<C-a>", "<cmd>CodeCompanionActions<cr>" },
-			{ "v", "<C-a>", "<cmd>CodeCompanionActions<cr>" },
-			{ "n", "<leader>zd", "<cmd>Telescope codecompanion<cr>" },
-			{ "v", "<leader>zd", "<cmd>Telescope codecompanion<cr>" },
-			{ "n", "<leader>zT", "<cmd>lua show_current_adapter()<cr>" },
-			{ "v", "<leader>zT", "<cmd>lua show_current_adapter()<cr>" },
-			{ "n", "<leader>zt", "<cmd>lua toggle_adapter()<cr>" },
-			{ "v", "<leader>zt", "<cmd>lua toggle_adapter()<cr>" },
-			{ "v", "ga", "<cmd>CodeCompanionChat Add<cr>" },
+			{ "n", "<C-a>", "<cmd>CodeCompanionActions<cr>", "" },
+			{ "v", "<C-a>", "<cmd>CodeCompanionActions<cr>", "" },
+			{ "n", "<leader>zz", "<cmd>Telescope codecompanion<cr>", "CodeCompanion" },
+			{ "v", "<leader>zz", "<cmd>Telescope codecompanion<cr>", "CodeCompanion" },
+			{ "n", "<leader>zT", "<cmd>lua show_current_adapter()<cr>", "CodeCompanion enabled model" },
+			{ "v", "<leader>zT", "<cmd>lua show_current_adapter()<cr>", "CodeCompanion enabled model" },
+			{ "n", "<leader>zt", "<cmd>lua toggle_adapter()<cr>", "CodeCompanion toggle model" },
+			{ "v", "<leader>zt", "<cmd>lua toggle_adapter()<cr>", "CodeCompanion toggle model" },
+			{ "v", "ga", "<cmd>CodeCompanionChat Add<cr>", "" },
 		}
 
 		for _, keymap in ipairs(keymaps) do
-			vim.api.nvim_set_keymap(keymap[1], keymap[2], keymap[3], { noremap = true, silent = true })
+			vim.api.nvim_set_keymap(
+				keymap[1],
+				keymap[2],
+				keymap[3],
+				{ noremap = true, silent = true, desc = keymap[4] }
+			)
 		end
 
 		-- Set initial keymap for <leader>za
@@ -189,13 +194,13 @@ return {
 			"n",
 			"<leader>za",
 			"<cmd>CodeCompanionChat " .. adapter_names[current_adapter_index] .. "<cr>",
-			{ noremap = true, silent = true }
+			{ noremap = true, silent = true, desc = "CodeCompanionChat " .. adapter_names[current_adapter_index] }
 		)
 		vim.api.nvim_set_keymap(
 			"v",
 			"<leader>za",
 			"<cmd>CodeCompanionChat " .. adapter_names[current_adapter_index] .. "<cr>",
-			{ noremap = true, silent = true }
+			{ noremap = true, silent = true, desc = "CodeCompanionChat " .. adapter_names[current_adapter_index] }
 		)
 
 		vim.cmd([[cab cc CodeCompanion]])
