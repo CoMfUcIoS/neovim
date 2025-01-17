@@ -1,9 +1,56 @@
 return {
 	"folke/snacks.nvim",
+	dependencies = {
+		{
+			"folke/todo-comments.nvim",
+			optional = true,
+			keys = {
+				{
+					"<leader>ft",
+					function()
+						Snacks.picker.todo_comments()
+					end,
+					desc = "Todo",
+				},
+				{
+					"<leader>fT",
+					function()
+						Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+					end,
+					desc = "Todo/Fix/Fixme",
+				},
+			},
+		},
+		{
+			"folke/trouble.nvim",
+			optional = true,
+			specs = {
+				"folke/snacks.nvim",
+				opts = function(_, opts)
+					return vim.tbl_deep_extend("force", opts or {}, {
+						picker = {
+							actions = require("trouble.sources.snacks").actions,
+							win = {
+								input = {
+									keys = {
+										["<C-t>"] = {
+											"trouble_open",
+											mode = { "n", "i" },
+										},
+									},
+								},
+							},
+						},
+					})
+				end,
+			},
+		},
+	},
 	priority = 1000,
 	lazy = false,
 	---@type snacks.Config
 	opts = {
+		picker = {},
 		bigfile = {
 			enabled = true,
 			notify = true, -- show notification when big file detected
@@ -258,6 +305,141 @@ return {
 					},
 				})
 			end,
+		},
+		{
+			"<leader>ff",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"<leader>fr",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Recent",
+		},
+		{
+			"<leader>fl",
+			function()
+				Snacks.picker.lines()
+			end,
+			desc = "Buffer Lines",
+		},
+		{
+			"<leader>fgb",
+			function()
+				Snacks.picker.grep_buffers()
+			end,
+			desc = "Grep Open Buffers",
+		},
+		{
+			"<leader>fs",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>fw",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Visual selection or word",
+			mode = { "n", "x" },
+		},
+		{
+			"<leader>fb",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Buffers",
+		},
+		{
+			"<leader>fC",
+			function()
+				Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+			end,
+			desc = "Find Config File",
+		},
+		{
+			"<leader>fgg",
+			function()
+				Snacks.picker.git_files()
+			end,
+			desc = "Find Git Files",
+		},
+		{
+			"<leader>fgl",
+			function()
+				Snacks.picker.git_log()
+			end,
+			desc = "Git Log",
+		},
+		{
+			"<leader>fgs",
+			function()
+				Snacks.picker.git_status()
+			end,
+			desc = "Git Status",
+		},
+		{
+			"<leader>fd",
+			function()
+				Snacks.picker.diagnostics()
+			end,
+			desc = "Diagnostics",
+		},
+		{
+			"<leader>fc",
+			function()
+				Snacks.picker.commands()
+			end,
+			desc = "Commands",
+		},
+		{
+			"<leader>fk",
+			function()
+				Snacks.picker.keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"gd",
+			function()
+				Snacks.picker.lsp_definitions()
+			end,
+			desc = "Goto Definition",
+		},
+		{
+			"gr",
+			function()
+				Snacks.picker.lsp_references()
+			end,
+			nowait = true,
+			desc = "References",
+		},
+		{
+			"gI",
+			function()
+				Snacks.picker.lsp_implementations()
+			end,
+			desc = "Goto Implementation",
+		},
+		{
+			"gy",
+			function()
+				Snacks.picker.lsp_type_definitions()
+			end,
+			desc = "Goto T[y]pe Definition",
+		},
+		{
+			"<leader>fgs",
+			function()
+				Snacks.picker.lsp_symbols()
+			end,
+			desc = "LSP Symbols",
 		},
 	},
 	init = function()
