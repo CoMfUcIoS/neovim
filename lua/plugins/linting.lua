@@ -5,7 +5,7 @@ return {
 		local lint = require("lint")
 
 		lint.linters_by_ft = {
-			python = { "mypy", "pylint" },
+			python = { "pylint", "mypy" },
 			go = { "golangcilint" },
 			sh = { "shellcheck" },
 			puppet = { "puppet-lint" },

@@ -20,7 +20,7 @@ return {
 				graphql = { "prettierd" },
 				liquid = { "prettierd" },
 				lua = { "stylua" },
-				python = { "isort", "black" },
+				-- python = { "isort", "black" },
 				rust = { "rustfmt" },
 				ruby = { "rubocop" },
 				sh = { "shfmt" },
