@@ -6,8 +6,21 @@ return {
 	keys = {
 		{ "<leader>aT", "<cmd>AvanteToggleProvider<cr>", { desc = "Toggle Avante provider" } },
 		{ "<leader>ap", "<cmd>AvanteProvider<cr>", { desc = "Show Avante provider" } },
+		{ "<leader>am", "<cmd>AvanteToggleOpenRouterModel<cr>", { desc = "Toggle OpenRouter Model" } },
 	},
 	config = function()
+		-- openrouter models
+		local openrouter_models = {
+			"google/gemini-2.0-pro-exp-02-05:free",
+			"deepseek/deepseek-r1:free",
+			"google/gemini-2.0-flash-exp:free",
+			"google/gemini-exp-1206:free",
+			"meta-llama/llama-3.2-3b-instruct:free",
+			"deepseek/deepseek-r1-distill-qwen-32b:free",
+		}
+
+		local current_openrouter_model_index = 1
+
 		-- Provider configurations
 		local provider_configs = {
 			copilot = {}, -- copilot doesn't need special config
@@ -16,6 +29,12 @@ return {
 				model = "claude-3-5-sonnet-20241022",
 				temperature = 0,
 				max_tokens = 4096,
+			},
+			openrouter = {
+				__inherited_from = "openai",
+				endpoint = "https://openrouter.ai/api/v1/",
+				api_key_name = "OPENROUTER_API_KEY",
+				model = "google/gemini-2.0-pro-exp-02-05:free",
 			},
 		}
 
@@ -39,7 +58,7 @@ return {
 			dual_boost = {
 				enabled = false,
 				first_provider = "copilot",
-				second_provider = "claude",
+				second_provider = "openrouter",
 				prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
 				timeout = 60000, -- Timeout in milliseconds
 			},
@@ -54,20 +73,53 @@ return {
 		local function set_provider(provider_name)
 			opts.provider = provider_name
 			if provider_configs[provider_name] then
-				opts[provider_name] = provider_configs[provider_name]
+				if provider_name == "openrouter" then
+					opts.vendors = {
+						openrouter = provider_configs[provider_name],
+					}
+				else
+					opts[provider_name] = provider_configs[provider_name]
+				end
 			end
 			require("avante").setup(opts)
 			notify_provider()
 		end
 
+		local function set_openrouter_model(model_name)
+			provider_configs.openrouter.model = model_name
+			if opts.provider == "openrouter" then
+				set_provider("openrouter")
+			end
+		end
+
+		local function toggle_openrouter_model()
+			current_openrouter_model_index = (current_openrouter_model_index % #openrouter_models) + 1
+			local next_model = openrouter_models[current_openrouter_model_index]
+			set_openrouter_model(next_model)
+			vim.notify("Current OpenRouter model: " .. next_model, vim.log.levels.INFO)
+		end
+
+		local function index_of(tbl, value)
+			for i, v in ipairs(tbl) do
+				if v == value then
+					return i
+				end
+			end
+			return nil
+		end
+
 		local function toggle_provider()
-			local next_provider = opts.provider == "copilot" and "claude" or "copilot"
+			local providers = { "copilot", "claude", "openrouter" }
+			local current_index = index_of(providers, opts.provider)
+			local next_index = (current_index % #providers) + 1
+			local next_provider = providers[next_index]
 			set_provider(next_provider)
 		end
 
 		-- Create commands
 		vim.api.nvim_create_user_command("AvanteToggleProvider", toggle_provider, {})
 		vim.api.nvim_create_user_command("AvanteProvider", notify_provider, {})
+		vim.api.nvim_create_user_command("AvanteToggleOpenRouterModel", toggle_openrouter_model, {})
 
 		-- Initial setup
 		require("avante").setup(opts)
