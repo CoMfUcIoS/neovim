@@ -160,7 +160,7 @@ return {
 						},
 						schema = {
 							model = {
-								default = "qwen2.5-coder:14b",
+								default = "deepseek-r1:32b",
 							},
 						},
 					})

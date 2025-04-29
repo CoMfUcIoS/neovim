@@ -181,6 +181,37 @@ return {
 					},
 				})
 			end,
+			["golangci_lint_ls"] = function()
+				lspconfig["golangci_lint_ls"].setup({
+					capabilities = capabilities,
+					-- filetypes = { "go", "gomod" },
+					-- cmd = { "golangci-lint-langserver" },
+					-- root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
+					init_options = (function()
+						local pipe = io.popen("golangci-lint version|cut -d' ' -f4")
+						if pipe == nil then
+							return {}
+						end
+						local version = pipe:read("*a")
+						pipe:close()
+						local major_version = tonumber(version:match("^v?(%d+)%."))
+						if major_version and major_version > 1 then
+							return {
+								command = {
+									"golangci-lint",
+									"run",
+									"--output.json.path",
+									"stdout",
+									"--show-stats=false",
+									"--issues-exit-code=1",
+								},
+							}
+						end
+						return {}
+					end)(),
+				})
+			end,
+
 			["intelephense"] = function()
 				-- configure intelephense server
 				lspconfig["intelephense"].setup({
