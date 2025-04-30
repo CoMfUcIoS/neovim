@@ -122,10 +122,19 @@ return {
 			},
 			schema = {
 				model = {
-					default = "claude-3.7-sonnet",
+					default = "claude-3.5-sonnet",
 				},
 			},
 			adapters = {
+				copilot = function()
+					return require("codecompanion.adapters").extend("copilot", {
+						schema = {
+							model = {
+								-- default = "gemini-2.0-flash-001",
+							},
+						},
+					})
+				end,
 				xai = function()
 					return adapters.extend("xai", {
 						name = "xai",
@@ -160,7 +169,7 @@ return {
 						},
 						schema = {
 							model = {
-								default = "deepseek-r1:32b",
+								default = "codestral:22b",
 							},
 						},
 					})
