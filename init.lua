@@ -1,3 +1,5 @@
+vim.g.loaded_perl_provider = 0
+
 local function toggle_verbose()
 	if vim.o.verbose == 0 then
 		vim.o.verbosefile = vim.fn.expand("~/.vim_verbose.log")

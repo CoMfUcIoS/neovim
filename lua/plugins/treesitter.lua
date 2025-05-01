@@ -52,6 +52,11 @@ return {
 				"diff",
 				"regex",
 				"http",
+				"latex",
+				"norg",
+				"scss",
+				"typst",
+				"vue",
 			},
 			incremental_selection = {
 				enable = true,
