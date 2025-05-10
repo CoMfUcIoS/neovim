@@ -8,6 +8,7 @@ return {
 			"MeanderingProgrammer/render-markdown.nvim",
 			opts = {
 				file_types = { "markdown", "codecompanion" },
+				latex = { enabled = false },
 			},
 			ft = { "markdown", "codecompanion" },
 		},
@@ -44,6 +45,18 @@ return {
 		end
 
 		codecompanion.setup({
+			strategies = {
+				chat = {
+					tools = {
+						["mcp"] = {
+							callback = function()
+								return require("mcphub.extensions.codecompanion")
+							end,
+							description = "Call tools and resources from the MCP Servers",
+						},
+					},
+				},
+			},
 			prompt_library = {
 				["Generate a Commitizen Convention Message"] = {
 					strategy = "chat",
@@ -169,7 +182,7 @@ return {
 						},
 						schema = {
 							model = {
-								default = "codestral:22b",
+								default = "glm-4-32b-0414:q6_k",
 							},
 						},
 					})

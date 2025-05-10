@@ -37,6 +37,10 @@ return {
 			-- list of servers for mason to install
 			ensure_installed = {
 				"cmake",
+				"dockerls",
+				"eslint",
+				"jsonls",
+				"cmake",
 				"docker_compose_language_service",
 				"dockerls",
 				"gopls",

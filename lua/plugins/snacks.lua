@@ -118,6 +118,12 @@ return {
 						action = ":Mason",
 					},
 					{
+						icon = "",
+						desc = "MCP Hub",
+						key = "T",
+						action = ":MCPHub",
+					},
+					{
 						icon = " ",
 						desc = "Browse Repo",
 						key = "b",

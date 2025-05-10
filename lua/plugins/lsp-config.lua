@@ -70,6 +70,9 @@ return {
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
+		local capabilities2 = vim.lsp.protocol.make_client_capabilities()
+		capabilities2.workspace.didChangeWatchedFiles.dynamicRegistration = true
+
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
@@ -82,6 +85,16 @@ return {
 			-- default handler for installed servers
 			function(server_name)
 				lspconfig[server_name].setup({
+					capabilities = capabilities,
+				})
+			end,
+			["cssls"] = function()
+				lspconfig["cssls"].setup({
+					capabilities = capabilities,
+				})
+			end,
+			["dockerls"] = function()
+				lspconfig["dockerls"].setup({
 					capabilities = capabilities,
 				})
 			end,
