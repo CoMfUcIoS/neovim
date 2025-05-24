@@ -38,3 +38,8 @@ else
 end
 
 -- toggle_verbose()
+--
+
+-- Dynamically set python3_host_prog
+local python3_host_prog = os.getenv("PYTHON3_HOST_PROG") or vim.fn.expand("~/.pyenv/versions/neovim3/bin/python")
+vim.g.python3_host_prog = python3_host_prog
