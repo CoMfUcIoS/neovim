@@ -8,12 +8,9 @@ return {
 			{ "zM", '<Cmd>lua require("ufo").closeAllFolds()<CR>', "ufo: close all folds" },
 			{ "zK", '<Cmd>lua require("ufo").peekFoldedLinesUnderCursor()<CR>', "ufo: preview fold" },
 		},
-		opts = {
-			filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
-		},
 		config = function()
-			vim.o.foldcolumn = "1" -- '0' is not bad
-			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+			vim.o.foldcolumn = "1"
+			vim.o.foldlevel = 99
 			vim.o.foldlevelstart = 99
 			vim.o.foldenable = true
 
@@ -28,11 +25,14 @@ return {
 				provider_selector = function(bufnr, filetype, buftype)
 					return { "treesitter", "indent" }
 				end,
+				-- If you want to exclude filetypes, add this here:
+				-- filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
 			})
 		end,
 	},
 	{
 		"chrisgrieser/nvim-origami",
+		version = "v1.9",
 		event = "VeryLazy",
 		keys = {
 			{
@@ -50,7 +50,12 @@ return {
 				desc = "Open fold",
 			},
 		},
-		opts = { setupFoldKeymaps = false },
+		config = function()
+			require("origami").setup({
+				setupFoldKeymaps = false,
+				signs = { open = "", closed = "" },
+			})
+		end,
 	},
 	{
 		"gh-liu/fold_line.nvim",
