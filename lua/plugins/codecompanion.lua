@@ -152,9 +152,9 @@ return {
 								-- desc = "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API.",
 								---@type string|fun(): string
 								-- default = "gpt-4o-2024-08-06",
-								default = "claude-sonnet-4",
+								-- default = "claude-sonnet-4",
 								-- default = "claude-3.7-sonnet",
-								-- default = "gpt-4.1-2025-04-14",
+								default = "gpt-4.1-2025-04-14",
 								choices = {
 									-- ["o3-mini-2025-01-31"] = { opts = { can_reason = true } },
 									-- ["o1-2024-12-17"] = { opts = { can_reason = true } },
