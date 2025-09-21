@@ -30,27 +30,27 @@ return {
 			local codecompanion = require("codecompanion")
 			local actions = require("codecompanion.helpers.actions")
 			local adapters = require("codecompanion.adapters")
-   local current_adapter_index = 1 -- copilot is the first in the list
+			local current_adapter_index = 1 -- copilot is the first in the list
 			local adapter_names = { "copilot", "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
 
-        _G.toggle_adapter = function()
-            current_adapter_index = current_adapter_index % #adapter_names + 1
-            local adapter_name = adapter_names[current_adapter_index]
-            vim.notify("Switched to adapter: " .. adapter_name)
-            vim.g.codecompanion_adapter = adapter_name
-            vim.api.nvim_set_keymap(
-                "n",
-                "<leader>za",
-                "<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
-                { noremap = true, silent = true }
-            )
-            vim.api.nvim_set_keymap(
-                "v",
-                "<leader>za",
-                "<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
-                { noremap = true, silent = true }
-            )
-        end
+			_G.toggle_adapter = function()
+				current_adapter_index = current_adapter_index % #adapter_names + 1
+				local adapter_name = adapter_names[current_adapter_index]
+				vim.notify("Switched to adapter: " .. adapter_name)
+				vim.g.codecompanion_adapter = adapter_name
+				vim.api.nvim_set_keymap(
+					"n",
+					"<leader>za",
+					"<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
+					{ noremap = true, silent = true }
+				)
+				vim.api.nvim_set_keymap(
+					"v",
+					"<leader>za",
+					"<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
+					{ noremap = true, silent = true }
+				)
+			end
 
 			_G.show_current_adapter = function()
 				local adapter_name = adapter_names[current_adapter_index]
@@ -152,170 +152,161 @@ return {
 					},
 				},
 				adapters = {
-					opts = {
-						show_model_choices = true,
-					},
-					copilot = function()
-						return require("codecompanion.adapters").extend("copilot", {
-							schema = {
-								model = {
-									-- order = 1,
-									-- mapping = "parameters",
-									-- type = "enum",
-									-- desc = "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API.",
-									---@type string|fun(): string
-									-- default = "gpt-4o-2024-08-06",
-									-- default = "claude-sonnet-4",
-									-- default = "claude-3.7-sonnet",
-									default = "gpt-4.1-2025-04-14",
-									choices = {
-										-- ["o3-mini-2025-01-31"] = { opts = { can_reason = true } },
-										-- ["o1-2024-12-17"] = { opts = { can_reason = true } },
-										-- ["o1-mini-2024-09-12"] = { opts = { can_reason = true } },
-										"claude-3.5-sonnet",
-										"claude-3.7-sonnet",
-										"claude-3.7-sonnet-thought",
-										"claude-sonnet-4",
-										"gpt-4o-2024-11-20",
-										"gemini-2.0-flash-001",
+					http = {
+						opts = { show_model_choices = true },
+
+						-- Copilot (non-http adapter helper)
+						copilot = function()
+							return adapters.extend("copilot", {
+								schema = {
+									model = {
+										default = "gpt-4.1-2025-04-14",
+										choices = {
+											"claude-3.5-sonnet",
+											"claude-3.7-sonnet",
+											"claude-3.7-sonnet-thought",
+											"claude-sonnet-4",
+											"gpt-4o-2024-11-20",
+											"gemini-2.0-flash-001",
+										},
 									},
 								},
-							},
-						})
-					end,
-					xai = function()
-						return adapters.extend("xai", {
-							name = "xai",
-						})
-					end,
-					anthropic = function()
-						return adapters.extend("anthropic", {
-							name = "claude",
-							max_tokens = { default = 4096 },
-						})
-					end,
-					ollama_remote = function()
-						return adapters.extend("ollama", {
-							env = {
-								name = "qwen2.5-coder:14b",
-								url = "http://10.0.0.114:11434",
-							},
-							parameters = {
-								sync = true,
-							},
-							schema = {
-								model = {
-									default = "qwen2.5-coder:14b",
-								},
-							},
-						})
-					end,
-					ollama = function()
-						return adapters.extend("ollama", {
-							parameters = {
-								sync = true,
-							},
-							schema = {
-								model = {
-									default = "glm-4-32b-0414:q6_k",
-								},
-							},
-						})
-					end,
-					openrouter = function()
-						local openrouter_models = {
-							"google/gemini-2.0-pro-exp-02-05:free",
-							"deepseek/deepseek-r1:free",
-							"google/gemini-2.0-flash-exp:free",
-							"google/gemini-exp-1206:free",
-							"meta-llama/llama-3.2-3b-instruct:free",
-							"deepseek/deepseek-r1-distill-qwen-32b:free",
-						}
-						local current_openrouter_model_index = 1
+							})
+						end,
 
-						local function reload_openrouter_adapter()
-							codecompanion.setup({
-								adapters = {
-									openrouter = function()
-										return require("codecompanion.adapters").extend("openai_compatible", {
-											env = {
-												url = "https://openrouter.ai/api",
-												api_key = vim.env.OPENROUTER_API_KEY,
-												chat_url = "/v1/chat/completions",
-												models_endpoint = "/v1/models",
-											},
-											schema = {
-												model = {
-													default = function()
-														return vim.g.codecompanion_openrouter_model
-													end,
-												},
-											},
-											hooks = {
-												before = {
-													function(adapter)
-														if adapter.name == "openrouter" then
-															adapter.model = vim.g.codecompanion_openrouter_model
-														end
-													end,
-												},
-											},
-										})
-									end,
+						xai = function()
+							return adapters.http.extend("xai", { name = "xai" })
+						end,
+
+						anthropic = function()
+							return adapters.http.extend("anthropic", {
+								name = "claude",
+								max_tokens = { default = 4096 },
+							})
+						end,
+
+						ollama_remote = function()
+							return adapters.http.extend("ollama", {
+								env = {
+									name = "qwen2.5-coder:14b",
+									url = "http://10.0.0.114:11434",
+								},
+								parameters = { sync = true },
+								schema = { model = { default = "qwen2.5-coder:14b" } },
+							})
+						end,
+
+						ollama = function()
+							return adapters.http.extend("ollama", {
+								parameters = { sync = true },
+								schema = { model = { default = "glm-4-32b-0414:q6_k" } },
+							})
+						end,
+
+						-- OpenRouter (fixed structure)
+						openrouter = function()
+							local openrouter_models = {
+								"google/gemini-2.0-pro-exp-02-05:free",
+								"deepseek/deepseek-r1:free",
+								"google/gemini-2.0-flash-exp:free",
+								"google/gemini-exp-1206:free",
+								"meta-llama/llama-3.2-3b-instruct:free",
+								"deepseek/deepseek-r1-distill-qwen-32b:free",
+							}
+							local current_openrouter_model_index = 1
+
+							-- Initialize selected model
+							vim.g.codecompanion_openrouter_model = openrouter_models[current_openrouter_model_index]
+
+							local function reload_openrouter_adapter()
+								codecompanion.setup({
+									adapters = {
+										http = {
+											openrouter = function()
+												return require("codecompanion.adapters").http.extend(
+													"openai_compatible",
+													{
+														env = {
+															url = "https://openrouter.ai/api",
+															api_key = vim.env.OPENROUTER_API_KEY,
+															chat_url = "/v1/chat/completions",
+															models_endpoint = "/v1/models",
+														},
+														schema = {
+															model = {
+																default = function()
+																	return vim.g.codecompanion_openrouter_model
+																end,
+															},
+														},
+														hooks = {
+															before = {
+																function(adapter)
+																	if adapter.name == "openrouter" then
+																		adapter.model =
+																			vim.g.codecompanion_openrouter_model
+																	end
+																end,
+															},
+														},
+													}
+												)
+											end,
+										},
+									},
+								})
+							end
+
+							-- Expose a global toggle for model cycling
+							_G.toggle_openrouter_model = function()
+								current_openrouter_model_index = current_openrouter_model_index % #openrouter_models + 1
+								local model_name = openrouter_models[current_openrouter_model_index]
+								vim.g.codecompanion_openrouter_model = model_name
+								vim.notify("Switched to OpenRouter model: " .. model_name)
+								reload_openrouter_adapter()
+							end
+
+							-- Keymaps to toggle models
+							vim.api.nvim_set_keymap(
+								"n",
+								"<leader>zm",
+								"<cmd>lua toggle_openrouter_model()<cr>",
+								{ noremap = true, silent = true, desc = "CodeCompanion Toggle OpenRouter Model" }
+							)
+							vim.api.nvim_set_keymap(
+								"v",
+								"<leader>zm",
+								"<cmd>lua toggle_openrouter_model()<cr>",
+								{ noremap = true, silent = true, desc = "CodeCompanion Toggle OpenRouter Model" }
+							)
+
+							-- Return the base adapter (with dynamic model)
+							return require("codecompanion.adapters").http.extend("openai_compatible", {
+								env = {
+									url = "https://openrouter.ai/api",
+									api_key = vim.env.OPENROUTER_API_KEY,
+									chat_url = "/v1/chat/completions",
+									models_endpoint = "/v1/models",
+								},
+								schema = {
+									model = {
+										default = function()
+											return vim.g.codecompanion_openrouter_model
+										end,
+									},
+								},
+								hooks = {
+									before = {
+										function(adapter)
+											if adapter.name == "openrouter" then
+												adapter.model = vim.g.codecompanion_openrouter_model
+											end
+										end,
+									},
 								},
 							})
-						end
-
-						_G.toggle_openrouter_model = function()
-							current_openrouter_model_index = current_openrouter_model_index % #openrouter_models + 1
-							local model_name = openrouter_models[current_openrouter_model_index]
-							vim.g.codecompanion_openrouter_model = model_name
-							vim.notify("Switched to OpenRouter model: " .. model_name)
-							reload_openrouter_adapter() -- Reload the adapter config
-						end
-
-						-- Initialize the model here
-						vim.g.codecompanion_openrouter_model = openrouter_models[current_openrouter_model_index]
-
-						vim.api.nvim_set_keymap(
-							"n",
-							"<leader>zm",
-							"<cmd>lua toggle_openrouter_model()<cr>",
-							{ noremap = true, silent = true, desc = "CodeCompanion Toggle OpenRouter Model" }
-						)
-
-						vim.api.nvim_set_keymap(
-							"v",
-							"<leader>zm",
-							"<cmd>lua toggle_openrouter_model()<cr>",
-							{ noremap = true, silent = true, desc = "CodeCompanion Toggle OpenRouter Model" }
-						)
-
-						return require("codecompanion.adapters").extend("openai_compatible", {
-							env = {
-								url = "https://openrouter.ai/api",
-								api_key = vim.env.OPENROUTER_API_KEY,
-								chat_url = "/v1/chat/completions",
-								models_endpoint = "/v1/models",
-							},
-							schema = {
-								model = {
-									default = function()
-										return vim.g.codecompanion_openrouter_model
-									end,
-								},
-							},
-							hooks = {
-								before = {
-									function(adapter)
-										if adapter.name == "openrouter" then
-											adapter.model = vim.g.codecompanion_openrouter_model
-										end
-									end,
-								},
-							},
-						})
-					end,
+						end,
+					},
 				},
 			})
 
@@ -339,21 +330,20 @@ return {
 				)
 			end
 
-
-            -- Set initial keymap for <leader>za to copilot
-            vim.g.codecompanion_adapter = "copilot"
-            vim.api.nvim_set_keymap(
-                "n",
-                "<leader>za",
-                "<cmd>CodeCompanionChat copilot<cr>",
-                { noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
-            )
-            vim.api.nvim_set_keymap(
-                "v",
-                "<leader>za",
-                "<cmd>CodeCompanionChat copilot<cr>",
-                { noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
-            )
+			-- Set initial keymap for <leader>za to copilot
+			vim.g.codecompanion_adapter = "copilot"
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>za",
+				"<cmd>CodeCompanionChat copilot<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
+			)
+			vim.api.nvim_set_keymap(
+				"v",
+				"<leader>za",
+				"<cmd>CodeCompanionChat copilot<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
+			)
 
 			vim.cmd([[cab cc CodeCompanion]])
 		end,

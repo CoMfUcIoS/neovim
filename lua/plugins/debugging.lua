@@ -386,7 +386,7 @@ return {
 			}
 		end
 		local php_debug_adapt_path = require("mason-registry").get_package("php-debug-adapter"):get_install_path()
-		dap.adapters.php = {
+		dap.adapters.http.php = {
 			type = "executable",
 			command = "node",
 			args = { php_debug_adapt_path .. "/extension/out/phpDebug.js" },
@@ -436,7 +436,7 @@ return {
 		--    :luafile myscript.lua
 		-- 8. The breakpoint should hit and freeze the instance (B)
 
-		dap.adapters.nlua = function(callback, config)
+		dap.adapters.http.nlua = function(callback, config)
 			local adapter = {
 				type = "server",
 				host = config.host or "127.0.0.1",

@@ -6,6 +6,15 @@ return {
 	cmd = "MCPHub", -- lazy load by default
 	build = "bundled_build.lua", -- Bundles mcp-hub locally
 	config = function()
+		-- Set up the global lualine component for MCPHub (see :help mcphub-lualine)
+		vim.g.mcphub_lualine_component = function()
+			local ok, mcphub = pcall(require, "mcphub")
+			if ok and mcphub.lualine_component then
+				return mcphub.lualine_component()
+			end
+			return ""
+		end
+
 		require("mcphub").setup({
 			use_bundled_binary = true, -- Use local binary
 			-- Server configuration
