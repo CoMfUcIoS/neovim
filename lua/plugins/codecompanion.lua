@@ -30,27 +30,27 @@ return {
 			local codecompanion = require("codecompanion")
 			local actions = require("codecompanion.helpers.actions")
 			local adapters = require("codecompanion.adapters")
-			local current_adapter_index = 2
+   local current_adapter_index = 1 -- copilot is the first in the list
 			local adapter_names = { "copilot", "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
 
-			_G.toggle_adapter = function()
-				current_adapter_index = current_adapter_index % #adapter_names + 1
-				local adapter_name = adapter_names[current_adapter_index]
-				vim.notify("Switched to adapter: " .. adapter_name)
-				vim.g.codecompanion_adapter = adapter_name
-				vim.api.nvim_set_keymap(
-					"n",
-					"<leader>za",
-					"<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
-					{ noremap = true, silent = true }
-				)
-				vim.api.nvim_set_keymap(
-					"v",
-					"<leader>za",
-					"<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
-					{ noremap = true, silent = true }
-				)
-			end
+        _G.toggle_adapter = function()
+            current_adapter_index = current_adapter_index % #adapter_names + 1
+            local adapter_name = adapter_names[current_adapter_index]
+            vim.notify("Switched to adapter: " .. adapter_name)
+            vim.g.codecompanion_adapter = adapter_name
+            vim.api.nvim_set_keymap(
+                "n",
+                "<leader>za",
+                "<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
+                { noremap = true, silent = true }
+            )
+            vim.api.nvim_set_keymap(
+                "v",
+                "<leader>za",
+                "<cmd>CodeCompanionChat " .. adapter_name .. "<cr>",
+                { noremap = true, silent = true }
+            )
+        end
 
 			_G.show_current_adapter = function()
 				local adapter_name = adapter_names[current_adapter_index]
@@ -339,22 +339,21 @@ return {
 				)
 			end
 
-			-- Set initial keymap for <leader>za
-			local function codecompanion_chat_with_openrouter_model()
-				return "<cmd>CodeCompanionChat openrouter<cr>"
-			end
-			vim.api.nvim_set_keymap(
-				"n",
-				"<leader>za",
-				codecompanion_chat_with_openrouter_model(),
-				{ noremap = true, silent = true, desc = "CodeCompanionChat openrouter" }
-			)
-			vim.api.nvim_set_keymap(
-				"v",
-				"<leader>za",
-				codecompanion_chat_with_openrouter_model(),
-				{ noremap = true, silent = true, desc = "CodeCompanionChat openrouter" }
-			)
+
+            -- Set initial keymap for <leader>za to copilot
+            vim.g.codecompanion_adapter = "copilot"
+            vim.api.nvim_set_keymap(
+                "n",
+                "<leader>za",
+                "<cmd>CodeCompanionChat copilot<cr>",
+                { noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
+            )
+            vim.api.nvim_set_keymap(
+                "v",
+                "<leader>za",
+                "<cmd>CodeCompanionChat copilot<cr>",
+                { noremap = true, silent = true, desc = "CodeCompanionChat copilot" }
+            )
 
 			vim.cmd([[cab cc CodeCompanion]])
 		end,
