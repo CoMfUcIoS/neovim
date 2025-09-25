@@ -76,16 +76,16 @@ return {
 					},
 				},
 				strategies = {
-					chat = {
-						tools = {
-							["mcp"] = {
-								callback = function()
-									return require("mcphub.extensions.codecompanion")
-								end,
-								description = "Call tools and resources from the MCP Servers",
-							},
-						},
-					},
+					-- chat = {
+					-- 	tools = {
+					-- 		["mcp"] = {
+					-- 			callback = function()
+					-- 				return require("mcphub.extensions.codecompanion")
+					-- 			end,
+					-- 			description = "Call tools and resources from the MCP Servers",
+					-- 		},
+					-- 	},
+					-- },
 				},
 				prompt_library = {
 					["Generate a Commitizen Convention Message"] = {
