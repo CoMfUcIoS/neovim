@@ -168,42 +168,28 @@ return {
 						default = "claude-3.5-sonnet",
 					},
 				},
-				adapters = {
+					adapters = {
+					-- Copilot (non-HTTP adapter) - use built-in copilot adapter
+					copilot = function()
+						return require("codecompanion.adapters").extend("copilot", {})
+					end,
+
 					http = {
 						opts = { show_model_choices = true },
 
-						-- Copilot (non-http adapter helper)
-						copilot = function()
-							return adapters.extend("copilot", {
-								schema = {
-									model = {
-										default = "gpt-4.1-2025-04-14",
-										choices = {
-											"claude-3.5-sonnet",
-											"claude-3.7-sonnet",
-											"claude-3.7-sonnet-thought",
-											"claude-sonnet-4",
-											"gpt-4o-2024-11-20",
-											"gemini-2.0-flash-001",
-										},
-									},
-								},
-							})
-						end,
-
 						xai = function()
-							return adapters.http.extend("xai", { name = "xai" })
+							return require("codecompanion.adapters").http.extend("xai", { name = "xai" })
 						end,
 
 						anthropic = function()
-							return adapters.http.extend("anthropic", {
+							return require("codecompanion.adapters").http.extend("anthropic", {
 								name = "claude",
 								max_tokens = { default = 4096 },
 							})
 						end,
 
 						ollama_remote = function()
-							return adapters.http.extend("ollama", {
+							return require("codecompanion.adapters").http.extend("ollama", {
 								env = {
 									name = "qwen2.5-coder:14b",
 									url = "http://10.0.0.114:11434",
@@ -214,7 +200,7 @@ return {
 						end,
 
 						ollama = function()
-							return adapters.http.extend("ollama", {
+							return require("codecompanion.adapters").http.extend("ollama", {
 								parameters = { sync = true },
 								schema = { model = { default = "glm-4-32b-0414:q6_k" } },
 							})
