@@ -10,7 +10,7 @@ return {
 			sh = { "shellcheck" },
 			puppet = { "puppet-lint" },
 			ruby = { "rubocop" },
-			rust = { "cargo" },
+
 			lua = { "luacheck" },
 			clojure = { "clj-kondo" },
 		}

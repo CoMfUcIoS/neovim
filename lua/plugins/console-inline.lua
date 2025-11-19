@@ -17,6 +17,11 @@ return {
 		-- Performance & placement
 		use_index = true, -- Enable fast buffer indexing (critical)
 		use_treesitter = true, -- Enable Tree-sitter for accurate placement
+		max_tokens_per_line = 120, -- Cap tokens per line (prevents minified file bloat)
+		skip_long_lines_len = 4000, -- Skip indexing very long lines (likely bundled)
+		incremental_index = true, -- Build large file indexes in batches (smooth UI)
+		index_batch_size = 900, -- Lines per incremental batch (balanced responsiveness)
+		treesitter_debounce_ms = 120, -- Debounce Tree-sitter rebuilds (avoid edit churn)
 		prefer_original_source = true, -- Trust source maps (TypeScript/JSX locations)
 		resolve_source_maps = true, -- Enable source map resolution
 		benchmark_enabled = false, -- Disable benchmark overhead
