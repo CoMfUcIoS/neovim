@@ -1,5 +1,6 @@
 return {
-	"comfucios/console-inline.nvim",
+	-- "comfucios/console-inline.nvim",
+	dir = "/Users/ioanniskarasavvaidis/Apps/console-inline.nvim",
 	-- dir = "/Users/i.karasavvaidis/Apps/console-inline.nvim",
 	version = "*",
 	event = "VimEnter",
@@ -9,6 +10,7 @@ return {
 		port = 36123,
 
 		-- Behavior
+		-- sessions_enabled = true,
 		autostart = true, -- Start on VimEnter
 		autostart_relay = true, -- Auto-start WebSocket relay for browsers
 		open_missing_files = false, -- Don't auto-open files (can be disruptive)
@@ -67,4 +69,7 @@ return {
 		--   },
 		-- },
 	},
+	config = function(_, opts)
+		require("console_inline").setup(opts)
+	end,
 }
