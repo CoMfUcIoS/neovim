@@ -1,6 +1,5 @@
 return {
-	-- "comfucios/console-inline.nvim",
-	dir = "/Users/ioanniskarasavvaidis/Apps/console-inline.nvim",
+	"comfucios/console-inline.nvim",
 	-- dir = "/Users/i.karasavvaidis/Apps/console-inline.nvim",
 	version = "*",
 	event = "VimEnter",
