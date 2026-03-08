@@ -2,13 +2,18 @@ return {
 	"pwntester/octo.nvim",
 	requires = {
 		"nvim-lua/plenary.nvim",
-		"nvim-telescope/telescope.nvim",
+		"folke/snacks.nvim",
+		-- OR "nvim-telescope/telescope.nvim",
 		-- OR 'ibhagwan/fzf-lua',
 		"nvim-tree/nvim-web-devicons",
 	},
-	config = function()
-		require("octo").setup()
-	end,
+	cmd = "Octo",
+	opts = {
+		-- or "fzf-lua" or "snacks" or "default"
+		picker = "snacks",
+		-- bare Octo command opens picker of commands
+		enable_builtin = true,
+	},
 	keys = {
 		{ "<leader>lh", "<cmd>Octo issue list<CR>", desc = "Octo: List issues" },
 		{ "<leader>lp", "<cmd>Octo pr list<CR>", desc = "Octo: List pull requests" },
