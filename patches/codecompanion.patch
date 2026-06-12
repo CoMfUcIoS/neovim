@@ -1,0 +1,15 @@
+diff --git a/lua/codecompanion/config.lua b/lua/codecompanion/config.lua
+index ba9688b4..f8eab97a 100644
+--- a/lua/codecompanion/config.lua
++++ b/lua/codecompanion/config.lua
+@@ -89,8 +89,9 @@ local defaults = {
+       },
+     },
+     -- CHAT INTERACTION -------------------------------------------------------
+-    chat = {
++chat = {
+       adapter = "copilot",
++      variables = {},
+       roles = {
+         ---The header name for the LLM's messages
+         ---@type string|fun(adapter: CodeCompanion.HTTPAdapter|CodeCompanion.ACPAdapter): string
