@@ -97,8 +97,6 @@ return {
 				"shfmt", -- shell formatter
 				"luacheck", -- lua linter
 				"shellcheck", -- shell linter
-				"clj-kondo", -- clojure linter
-				"cljfmt", -- clojure formatter
 			},
 		})
 	end,

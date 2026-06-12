@@ -64,6 +64,27 @@ return {
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
+		-- configure pullminder lsp (custom registration) using new vim.lsp.config API
+		vim.lsp.config.pullminder_lsp = {
+			cmd = { "pullminder", "lsp" },
+			filetypes = {
+				"yaml",
+				"json",
+				"markdown",
+				"go",
+				"typescript",
+				"javascript",
+				"python",
+				"dockerfile",
+				"terraform",
+				"sh",
+				"bash",
+				"zsh",
+			},
+			root_markers = { ".git" },
+		}
+		vim.lsp.enable("pullminder_lsp")
+
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
