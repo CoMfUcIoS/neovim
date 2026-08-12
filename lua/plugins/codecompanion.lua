@@ -9,7 +9,8 @@ return {
 		build = "bundled_build.lua", -- Bundles `mcp-hub` binary along with the neovim plugin
 		config = function()
 			require("mcphub").setup({
-				use_bundled_binary = true, -- Use local `mcp-hub` binary
+				use_bundled_binary = false, -- Use local `mcp-hub` binary
+				cmd = vim.fn.exepath("mcp-hub"),
 			})
 		end,
 	},

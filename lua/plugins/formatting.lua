@@ -10,7 +10,10 @@ return {
 				typescript = { "prettierd" },
 				javascriptreact = { "prettierd" },
 				typescriptreact = { "prettierd" },
-				go = { "golangci-lint", "gofmt", "gofumpt", "gomodifytags" },
+				-- goimports fixes imports, gofumpt is the stricter gofmt.
+				-- golangci-lint is a linter (see golangci_lint_ls) and
+				-- gomodifytags needs args -- neither is a conform formatter.
+				go = { "goimports", "gofumpt" },
 				svelte = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },
@@ -31,7 +34,7 @@ return {
 			format_on_save = {
 				lsp_fallback = true,
 				async = false,
-				timeout_ms = 300000,
+				timeout_ms = 3000, -- was 300000: a 5-minute synchronous hang on save
 			},
 		})
 

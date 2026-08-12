@@ -104,6 +104,25 @@ return {
 			end,
 			desc = "Debug Nearest",
 		},
+		-- dap-go drives delve straight off the test function under the cursor,
+		-- without going through neotest's discovery. Useful when neotest hasn't
+		-- found the test (build tags, generated files, odd layouts).
+		{
+			"<leader>dn",
+			function()
+				require("dap-go").debug_test()
+			end,
+			ft = "go",
+			desc = "Debug Nearest Go Test (delve)",
+		},
+		{
+			"<leader>dN",
+			function()
+				require("dap-go").debug_last_test()
+			end,
+			ft = "go",
+			desc = "Debug Last Go Test (delve)",
+		},
 		{
 			"<leader>dB",
 			function()
@@ -269,12 +288,16 @@ return {
 
 		vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
+		-- DAP signs are vim signs, not diagnostics. The old loop called
+		-- vim.diagnostic.config() per icon, which both did nothing for DAP and
+		-- wiped the LSP diagnostic gutter icons the moment dap loaded.
 		for name, sign in pairs(icons) do
 			sign = type(sign) == "table" and sign or { sign }
-			vim.diagnostic.config({
-				signs = {
-					[name] = { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] },
-				},
+			vim.fn.sign_define("Dap" .. name, {
+				text = sign[1],
+				texthl = sign[2] or "DiagnosticInfo",
+				linehl = sign[3],
+				numhl = sign[3],
 			})
 		end
 
@@ -386,7 +409,7 @@ return {
 			}
 		end
 		local php_debug_adapt_path = require("mason-registry").get_package("php-debug-adapter"):get_install_path()
-		dap.adapters.http.php = {
+		dap.adapters.php = {
 			type = "executable",
 			command = "node",
 			args = { php_debug_adapt_path .. "/extension/out/phpDebug.js" },
@@ -436,7 +459,7 @@ return {
 		--    :luafile myscript.lua
 		-- 8. The breakpoint should hit and freeze the instance (B)
 
-		dap.adapters.http.nlua = function(callback, config)
+		dap.adapters.nlua = function(callback, config)
 			local adapter = {
 				type = "server",
 				host = config.host or "127.0.0.1",

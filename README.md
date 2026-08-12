@@ -8,6 +8,11 @@ You can check the following repositories for the ZMK and QMK firmware for the ab
 [qmk firmware](https://github.com/CoMfUcIoS/qmk_firmware),
 [zmk firmware](https://github.com/CoMfUcIoS/miryoku_zmk)
 
+## Documentation
+
+- [`CONFIG.md`](CONFIG.md) — how everything works: every plugin, every keybinding, load order.
+- [`GO-WORKFLOW.md`](GO-WORKFLOW.md) — the Go engineering workflow: writing, navigating, refactoring, testing, debugging, troubleshooting.
+
 ## Structure
 
 The repository is structured as follows:

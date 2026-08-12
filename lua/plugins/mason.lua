@@ -40,9 +40,7 @@ return {
 				"dockerls",
 				"eslint",
 				"jsonls",
-				"cmake",
 				"docker_compose_language_service",
-				"dockerls",
 				"gopls",
 				"golangci_lint_ls",
 				-- "grammarly",
@@ -75,9 +73,15 @@ return {
 				"ruff",
 				"mypy",
 				"black", -- python formatter
+				-- go toolchain
+				"delve", -- go debugger (dap-go had no dlv binary to talk to)
+				"golangci-lint", -- the linter itself; golangci_lint_ls only wraps it
 				"gofumpt", -- go formatter
-				"goimports", -- go formatter
-				"gomodifytags",
+				"goimports", -- go imports
+				"gomodifytags", -- struct tags
+				"gotests", -- table-driven test generation
+				"impl", -- interface stub generation
+				"iferr", -- if err != nil boilerplate
 				"golines", -- go formatter
 				"isort", -- python formatter
 				"markdownlint", -- markdown linter

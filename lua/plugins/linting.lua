@@ -6,7 +6,9 @@ return {
 
 		lint.linters_by_ft = {
 			python = { "pylint", "mypy" },
-			go = { "golangcilint" },
+			-- go: handled by golangci_lint_ls (LSP). Running golangci-lint on
+			-- every BufReadPost/BufWritePost too meant two slow full-package
+			-- runs per save.
 			sh = { "shellcheck" },
 			puppet = { "puppet-lint" },
 			ruby = { "rubocop" },

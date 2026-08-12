@@ -1,9 +1,5 @@
 vim.g.loaded_perl_provider = 0
 
--- Add LuaRocks magick path for image.nvim
-package.path = package.path .. ";/Users/ioanniskarasavvaidis/.luarocks/share/lua/5.1/?.lua"
-package.cpath = package.cpath .. ";/Users/ioanniskarasavvaidis/.luarocks/lib/lua/5.1/?.so"
-
 local function toggle_verbose()
 	if vim.o.verbose == 0 then
 		vim.o.verbosefile = vim.fn.expand("~/.vim_verbose.log")
@@ -21,8 +17,13 @@ if vim.g.vscode then
 	print("VSCode mode enabled")
 else
 	require("lazy").setup({
-		{
-			import = "plugins",
+		spec = {
+			{
+				import = "plugins",
+			},
+		},
+		rocks = {
+			hererocks = true,
 		},
 	}, {
 		git = {
