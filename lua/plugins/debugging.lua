@@ -1,5 +1,78 @@
 local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
 
+--- Pick the runtime for a "Launch file" JS/TS debug session.
+---
+--- `node` cannot execute TypeScript, so a `.ts`/`.tsx` entrypoint needs a loader.
+--- Prefers the project's own tsx over one on PATH, since that's the version the
+--- project's other scripts use. Returns nil for `.js`/`.jsx` (and when no tsx
+--- exists), which leaves js-debug on its default of plain node — nvim-dap drops
+--- nil-returning config fields (`dap.lua:405`).
+local function launch_runtime()
+	local file = vim.api.nvim_buf_get_name(0)
+	if not file:match("%.tsx?$") then
+		return nil
+	end
+	local root = vim.fs.root(0, { "node_modules", "package.json", "tsconfig.json" }) or vim.fn.getcwd()
+	local project_tsx = root .. "/node_modules/.bin/tsx"
+	if vim.fn.executable(project_tsx) == 1 then
+		return project_tsx
+	end
+	local path_tsx = vim.fn.exepath("tsx")
+	if path_tsx ~= "" then
+		return path_tsx
+	end
+	vim.notify(
+		"no tsx found (npm i -D tsx) — node cannot run TypeScript directly",
+		vim.log.levels.WARN,
+		{ title = "dap" }
+	)
+	return nil
+end
+
+--- Read a .env-style file into a table for delve's `env`.
+---
+--- delve's DAP LaunchConfig has `env` (a map) but NOT `envFile` — that's a
+--- VSCode-Go client feature, where the editor expands the file before sending
+--- the request. nvim-dap doesn't do it either, in launch.json or otherwise, so
+--- an app that gets its config from a .env file starts with none of it unless we
+--- build the map ourselves.
+---@param path string
+---@return table<string,string>
+local function read_env_file(path)
+	local env = {}
+	local fd = io.open(vim.fn.expand(path), "r")
+	if not fd then
+		vim.notify("env file not found: " .. path, vim.log.levels.WARN, { title = "dap" })
+		return env
+	end
+	for line in fd:lines() do
+		line = line:gsub("^%s*export%s+", "")
+		local key, value = line:match("^%s*([%w_.]+)%s*=%s*(.*)$")
+		if key and not line:match("^%s*#") then
+			-- Strip one layer of matching quotes; leave the value otherwise verbatim
+			-- (delve does no variable substitution).
+			value = value:gsub("%s+#.*$", ""):gsub("^\"(.*)\"$", "%1"):gsub("^'(.*)'$", "%1")
+			env[key] = value
+		end
+	end
+	fd:close()
+	return env
+end
+
+--- Find the nearest .env-ish file, preferring the more specific ones this repo
+--- family tends to use.
+---@return string?
+local function guess_env_file()
+	local root = vim.fs.root(0, { "go.mod", ".git" }) or vim.fn.getcwd()
+	for _, name in ipairs({ ".env.server", ".env.worker", ".env.local", ".env" }) do
+		local path = root .. "/" .. name
+		if vim.fn.filereadable(path) == 1 then
+			return path
+		end
+	end
+	return nil
+end
+
 ---@param config {args?:string[]|fun():string[]?}
 local function get_args(config)
 	local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
@@ -61,20 +134,37 @@ return {
 				},
 			},
 		},
-		-- vscode-js-debug adapter
+		{ "theHamsta/nvim-dap-virtual-text", opts = {} },
+		-- Python. debugpy was in the Mason list but nothing ever registered a
+		-- `python` adapter, so python debugging didn't work at all. Point
+		-- dap-python at Mason's debugpy venv rather than the system python, so it
+		-- works without debugpy being installed into every project venv.
 		{
-			"microsoft/vscode-js-debug",
-			build = "npm i && npm run compile vsDebugServerBundle && rm -rf out && mv -f dist out",
-			version = "1.91.0",
-		},
-		{
-			"mxsdev/nvim-dap-vscode-js",
-			opts = {
-				debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
-				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
+			"mfussenegger/nvim-dap-python",
+			ft = "python",
+			config = function()
+				local debugpy = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+				require("dap-python").setup(vim.fn.executable(debugpy) == 1 and debugpy or "python3")
+			end,
+			keys = {
+				{
+					"<leader>dPt",
+					function()
+						require("dap-python").test_method()
+					end,
+					ft = "python",
+					desc = "Debug Nearest Python Test",
+				},
+				{
+					"<leader>dPc",
+					function()
+						require("dap-python").test_class()
+					end,
+					ft = "python",
+					desc = "Debug Python Test Class",
+				},
 			},
 		},
-		{ "theHamsta/nvim-dap-virtual-text", opts = {} },
 		-- Lua adapter
 		{
 			"jbyuki/one-small-step-for-vimkind",
@@ -268,6 +358,60 @@ return {
 			},
 		})
 
+		-- Attach to a delve that something *else* already started — the live-reload
+		-- case: `air` launches `dlv exec ... --headless`, so the target is fixed on
+		-- dlv's command line and the client attaches with mode="remote".
+		--
+		-- dap-go's own `go` adapter can't do this: given a port it still attaches an
+		-- `executable` (dap-go.lua:84-100) and nvim-dap would spawn a *second*,
+		-- local dlv instead of connecting to the running one.
+		dap.adapters.go_attach = function(callback, config)
+			callback({
+				type = "server",
+				host = config.host or "127.0.0.1",
+				port = config.port or 2345,
+				options = { initialize_timeout_sec = 20 },
+			})
+		end
+
+		dap.configurations.go = dap.configurations.go or {}
+		vim.list_extend(dap.configurations.go, {
+			{
+				-- The straightforward way to debug a server that normally runs under
+				-- air: don't use air. delve builds and runs it, breakpoints work
+				-- immediately, and there's no attach step. You lose live reload —
+				-- restart the session with <leader>dl instead.
+				type = "go",
+				name = "Debug package + .env file (pick dir)",
+				request = "launch",
+				mode = "debug",
+				program = function()
+					return vim.fn.input("Package dir: ", "./cmd/", "file")
+				end,
+				args = function()
+					return vim.split(vim.fn.input("Args: ", "--log-level=debug"), " ", { trimempty = true })
+				end,
+				env = function()
+					local guess = guess_env_file()
+					local path = vim.fn.input("Env file (empty for none): ", guess or "", "file")
+					return path ~= "" and read_env_file(path) or nil
+				end,
+				outputMode = "remote",
+			},
+			{
+				-- Live reload kept: air runs the binary under a headless delve and
+				-- this attaches to it. See CONFIG.md "Debugging a live-reload (air)
+				-- Go server" for the .air toml.
+				type = "go_attach",
+				name = "Attach to headless delve / air (port)",
+				request = "attach",
+				mode = "remote",
+				port = function()
+					return tonumber(vim.fn.input("dlv --headless port: ", "2345")) or 2345
+				end,
+			},
+		})
+
 		dap.listeners.after.event_initialized["dapui_config"] = function()
 			dapui.open({})
 		end
@@ -314,6 +458,24 @@ return {
 			dap_vscode.load_launchjs()
 		end
 
+		-- vscode-js-debug, from Mason's prebuilt `js-debug-adapter`, replacing a
+		-- `microsoft/vscode-js-debug` source checkout whose `npm i && npm run
+		-- compile` build never completed here — leaving nvim-dap-vscode-js pointed at
+		-- an empty `out/`, so every pwa-node session failed to launch. Mason's bin is
+		-- a one-line wrapper: `node .../dapDebugServer.js "$@"`, port as argv.
+		--
+		-- Registering the adapters directly is all nvim-dap-vscode-js was doing, so
+		-- that plugin is gone too.
+		local js_debug = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
+		for _, adapter in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }) do
+			dap.adapters[adapter] = {
+				type = "server",
+				host = "localhost",
+				port = "${port}",
+				executable = { command = js_debug, args = { "${port}" } },
+			}
+		end
+
 		dap_vscode.type_to_filetypes["node"] = js_filetypes
 
 		for _, language in ipairs(js_filetypes) do
@@ -324,6 +486,7 @@ return {
 					type = "pwa-node",
 					request = "launch",
 					program = "${file}",
+					runtimeExecutable = launch_runtime,
 					cwd = "${workspaceFolder}",
 					args = { "${file}" },
 					sourceMaps = true,

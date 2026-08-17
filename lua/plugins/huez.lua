@@ -7,7 +7,18 @@ return {
 	ensure = {},
 	config = function()
 		require("huez").setup({
-			theme_config_module = "modules.themes",
+			-- Where huez lands when it has no saved theme — a fresh clone, or a
+			-- remote-nvim host (huez keeps its state in stdpath("data")/huez,
+			-- which isn't in the remote copy allowlist). Default is "default",
+			-- i.e. plain Neovim. See lua/plugins/monokai.lua.
+			fallback = "monokai",
+			--
+			-- theme_config_module = "modules.themes" was removed: there is no
+			-- lua/modules/ directory, so huez logged "directory not found to load
+			-- themes from" and loaded no theme configs. The message is invisible
+			-- because huez defaults suppress_messages = true, so it was silently
+			-- doing nothing. Re-add it alongside a real lua/modules/themes/ tree
+			-- if you ever want per-theme setup hooks.
 		})
 		local pickers = require("huez.pickers")
 

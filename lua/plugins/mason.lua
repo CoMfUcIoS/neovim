@@ -33,9 +33,83 @@ return {
 			},
 		})
 
+		-- Remote profile: the languages actually worked on remotely are
+		-- Go, PHP, TS/JS and Java, plus the infra formats (json/yaml/docker/sh)
+		-- and lua for editing this config. What's dropped is whole languages that
+		-- aren't used there — Ruby, Python, Rust, Puppet, Clojure — which is what
+		-- keeps the ruby/python/rust toolchains off the remote.
+		--
+		-- Framework-specific servers (tailwindcss, svelte, graphql, emmet_ls,
+		-- prismals) and cmake/harper/markdown_oxide are also skipped; all are one
+		-- `:Mason` away if a remote repo turns out to need them.
+		local remote_servers = {
+			-- Go
+			"gopls",
+			"golangci_lint_ls",
+			-- TS / JS
+			"ts_ls",
+			"eslint",
+			-- PHP
+			"intelephense",
+			-- Java (started by nvim-jdtls, not automatic_enable — see java.lua)
+			"jdtls",
+			-- Python
+			"pyright",
+			-- web + infra + this config
+			"html",
+			"cssls",
+			"jsonls",
+			"dockerls",
+			"docker_compose_language_service",
+			"lua_ls",
+		}
+		local remote_tools = {
+			-- Go
+			"delve",
+			"golangci-lint",
+			"gofumpt",
+			"goimports",
+			"gomodifytags",
+			"gotests",
+			"impl",
+			"iferr",
+			"golines",
+			-- PHP
+			"php-debug-adapter",
+			"php-cs-fixer",
+			"phpcs",
+			"phpstan",
+			-- TS / JS
+			"prettierd",
+			"eslint-lsp",
+			-- vscode-js-debug, prebuilt (see debugging.lua)
+			"js-debug-adapter",
+			-- Java
+			"java-debug-adapter",
+			"java-test",
+			"google-java-format",
+			-- Python
+			"debugpy",
+			"ruff",
+			"mypy",
+			"pylint",
+			-- shared
+			"stylua",
+			"shfmt",
+			"shellcheck",
+			"yamlfix",
+			"markdownlint",
+		}
+
 		mason_lspconfig.setup({
+			-- jdtls is installed here but started by nvim-jdtls (lua/plugins/java.lua),
+			-- which attaches a per-project workspace and the java-debug/java-test
+			-- bundles. Letting automatic_enable start it too would give two
+			-- competing jdtls clients per buffer.
+			automatic_enable = { exclude = { "jdtls" } },
 			-- list of servers for mason to install
-			ensure_installed = {
+			ensure_installed = vim.g.nvim_remote and remote_servers or {
+				"jdtls",
 				"cmake",
 				"dockerls",
 				"eslint",
@@ -65,9 +139,14 @@ return {
 		})
 
 		mason_tool_installer.setup({
-			ensure_installed = {
+			ensure_installed = vim.g.nvim_remote and remote_tools or {
+				-- java: debug + test bundles for jdtls, and the formatter
+				"java-debug-adapter",
+				"java-test",
+				"google-java-format",
 				"debugpy",
 				"json-lsp",
+				"js-debug-adapter", -- vscode-js-debug for node/chrome, prebuilt
 				"firefox-debug-adapter",
 				"php-debug-adapter",
 				"ruff",
@@ -92,8 +171,8 @@ return {
 				"prettier",
 				"yamlfix", -- yaml formatter
 				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"black", -- python formatter
+				-- isort/black were listed twice; the first occurrences are above.
+				-- Both are kept installed but conform uses ruff for python now.
 				"pylint",
 				"eslint-lsp",
 				"rubocop", -- ruby formatter

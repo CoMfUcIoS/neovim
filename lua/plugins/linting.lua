@@ -9,6 +9,13 @@ return {
 			-- go: handled by golangci_lint_ls (LSP). Running golangci-lint on
 			-- every BufReadPost/BufWritePost too meant two slow full-package
 			-- runs per save.
+			--
+			-- php: phpcs only. phpstan is installed and is the more thorough
+			-- analyser, but it's slow enough on a real project that putting it on
+			-- BufWritePost repeats the golangci-lint mistake above. Run it by hand:
+			--   :lua require("lint").try_lint("phpstan")
+			-- Type errors still surface live through intelephense.
+			php = { "phpcs" },
 			sh = { "shellcheck" },
 			puppet = { "puppet-lint" },
 			ruby = { "rubocop" },

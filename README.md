@@ -11,7 +11,24 @@ You can check the following repositories for the ZMK and QMK firmware for the ab
 ## Documentation
 
 - [`CONFIG.md`](CONFIG.md) — how everything works: every plugin, every keybinding, load order.
+  - [Languages](CONFIG.md#languages-remote-parity) — Go, PHP, TS/JS, Java, Python:
+    server, formatter, linter, debugger and parser for each, plus which language
+    runtimes must exist on the machine.
 - [`GO-WORKFLOW.md`](GO-WORKFLOW.md) — the Go engineering workflow: writing, navigating, refactoring, testing, debugging, troubleshooting.
+  - [Remote debugging over SSH](GO-WORKFLOW.md#remote-debugging-over-ssh) — `<leader>dR`
+    picks a host from `~/.ssh/config` and runs delve there, VSCode Remote Explorer style.
+  - [Working entirely on a remote machine](GO-WORKFLOW.md#working-entirely-on-a-remote-machine) —
+    `<leader>Hs` provisions Neovim + this config on the remote and attaches a local UI,
+    the way VSCode Remote-SSH does. See also
+    [Remote development](CONFIG.md#remote-development-whole-editor-on-the-remote)
+    and the [remote profile](CONFIG.md#remote-profile), which trims the config for
+    remote boxes.
+- [`scripts/remote-bootstrap.sh`](scripts/remote-bootstrap.sh) — one-shot,
+  idempotent Debian/Ubuntu provisioning for a remote host. Run it before your
+  first `<leader>Hs`:
+  ```sh
+  ssh <host> 'bash -s' < scripts/remote-bootstrap.sh
+  ```
 
 ## Structure
 

@@ -501,6 +501,9 @@ Four ways, pick by context:
 | `<leader>dn` | **dap-go direct** — delve driven straight off the test function under the cursor |
 | `<leader>dN` | dap-go: re-debug the last test |
 
+(To debug a test on another machine, use `<leader>dR` and pick the `dlv debug`
+target with the test's package.)
+
 Set your breakpoint first, then run — the debugger stops there.
 
 **Why two routes?** neotest discovers tests through its adapter, which
@@ -512,12 +515,155 @@ the fallback.
 
 `<leader>dn` and `<leader>dN` only exist in Go buffers.
 
+### Debugging a live-reload (air) server
+
+Two options. **Start with the first** — live reload and step-debugging pull in
+opposite directions, because air kills the process on every save and that takes
+your debug session with it.
+
+**Option 1 — skip air (recommended).** Delve builds and runs the server itself,
+so breakpoints work with no attach step.
+
+`<leader>dc` → **"Debug package + .env file (pick dir)"**, then answer:
+
+```
+Package dir:  ./cmd/server
+Args:         --log-level=debug
+Env file:     .env.server        ← pre-filled if found
+```
+
+Rebuild by restarting the session (`<leader>dl` re-runs the last config).
+
+> **Why the env-file prompt exists.** delve's DAP has `env` (a map) but no
+> `envFile` — that's a VSCode-Go feature where the *editor* expands the file
+> first. nvim-dap doesn't do it either, in `launch.json` or anywhere else, so an
+> app configured by `.env` would otherwise start with none of its config. This
+> config reads the file and builds the map.
+
+**Option 2 — keep live reload.** air launches the binary under a headless delve
+and you attach to it. Needs a debug-flavoured air config; for cloudscanner that's
+`.air.server.debug.toml`:
+
+```toml
+[build]
+  # -N -l: without these, variables read <optimized out> and breakpoints
+  # land on surprising lines
+  cmd = "go build -gcflags='all=-N -l' -o ./tmp/cloudscanner_server ./cmd/server"
+  entrypoint = [
+    "dlv", "exec", "./tmp/cloudscanner_server",
+    "--headless", "--listen=127.0.0.1:2345", "--api-version=2",
+    "--accept-multiclient", "--continue",
+    "--", "--log-level=debug",
+  ]
+```
+
+```sh
+go install github.com/go-delve/delve/cmd/dlv@latest   # air needs dlv on PATH
+air -c .air.server.debug.toml
+```
+
+Then `<leader>dc` → **"Attach to headless delve / air (port)"** → `2345`.
+
+Notes, all of them verified against a running air:
+
+- **`dlv` must be on `PATH`.** Neovim's delve comes from Mason, but air runs
+  outside Neovim and shells out via `/bin/sh -c`. `go install` puts it in
+  `~/go/bin`, which is already on your PATH.
+- **`--continue`** starts the server immediately instead of waiting for a
+  debugger, so live reload behaves normally when nothing is attached.
+- **`--accept-multiclient`** is what lets you re-attach without restarting air.
+- **Re-attach after every reload.** air kills the whole process group on rebuild,
+  delve included, then starts a fresh delve on the same port. Your session dies;
+  `<leader>dc` → attach again.
+- Everything after `--` goes to the server, not to delve.
+
 ### Attaching to a running process
 
 Pick the **Attach** configuration at `<leader>dc` and choose the process.
-Works for a server you started outside Neovim. For containers or remote hosts,
-run `dlv --headless --listen=:2345` there and add a matching remote config to
-`.vscode/launch.json`.
+Works for a server you started outside Neovim, **on this machine**. For a
+process on another host, use `<leader>dR` — see below.
+
+### Remote debugging over SSH
+
+`<leader>dR`. Your code and breakpoints stay local; delve runs on the remote box
+and talks to Neovim through an SSH tunnel.
+
+```
+<leader>dR  →  pick host  →  (first time: remote repo root)  →  pick target
+```
+
+Hosts come from `~/.ssh/config`, the same list VSCode's Remote Explorer shows.
+Wildcard entries (`Host *`) are skipped, `Include` files are followed. Anything
+your ssh config already does — `ProxyCommand`, jump hosts, a specific
+`IdentityFile` — keeps working, because this shells out to plain `ssh <alias>`.
+
+**Three targets:**
+
+| Target | Use when |
+|---|---|
+| Attach to running process | A service is already up on the remote. Prompts for a name filter, then lists matching remote processes |
+| `dlv debug` a package | You want it built from source on the remote. Defaults to the package your current buffer is in |
+| `dlv exec` a prebuilt binary | The build happened in CI or via a Makefile — just run it |
+
+Then debug exactly as you would locally: `<leader>db` to set breakpoints,
+`<leader>do` / `<leader>di` to step, `<leader>de` to evaluate. Every key in this
+section works the same way; only the adapter differs.
+
+**The remote root.** Asked once per host, then cached in
+`stdpath("state")/dlv-remote.json`. It's how local file paths get mapped to
+remote ones — without it your breakpoints land on the wrong lines, or nowhere.
+Got it wrong? `:DapRemoteForgetRoot` and reconnect.
+
+**Prerequisites on the remote:** `dlv` on a login shell's `PATH` (`go install
+github.com/go-delve/delve/cmd/dlv@latest` puts it in `~/go/bin`), and for
+attaching, permission to ptrace the target process.
+
+**Ending a session** terminates delve and closes the tunnel. `<leader>dt`
+terminates explicitly.
+
+### Working entirely on a remote machine
+
+`<leader>dR` moves the *debugger*. `<leader>Hs` moves the *whole editor* —
+Neovim runs on the remote host with this config, and your terminal attaches to
+it. Everything that needs to see the code sees the real thing:
+
+| | `<leader>dR` | `<leader>Hs` |
+|---|---|---|
+| Breakpoints in local buffers | ✅ | n/a — buffers *are* remote |
+| gopls / completion on remote code | ❌ local gopls, local files | ✅ |
+| `<leader>ff` / live grep the remote repo | ❌ | ✅ |
+| Git, fugitive, gitsigns on remote repo | ❌ | ✅ |
+| Needs anything installed remotely | just `dlv` | Neovim + this config |
+
+**Reach for `<leader>dR`** when the code is checked out locally and you only
+need to break into a process elsewhere. **Reach for `<leader>Hs`** when the repo
+really lives on that box — a big monorepo, generated code, or a service that
+only builds there.
+
+**Provision the host once, first:**
+
+```sh
+ssh <host> 'bash -s' < scripts/remote-bootstrap.sh
+```
+
+That installs the compiler, git, ripgrep/fd/fzf, node and Go — Mason installs the
+Go tools with `go install`, so a Go toolchain has to exist before `<leader>Hs`.
+Idempotent, so re-run it whenever.
+
+Then `<leader>Hs`. First connect provisions Neovim, copies the config, and runs
+`:Lazy sync` plus Mason — a few minutes. Pick a **0.12.x** Neovim to match local.
+
+After that you're in an ordinary session: every Go key in this document works,
+because it's the same config. A **remote profile** trims what isn't useful there
+— no image rendering, screenshots, markdown preview or obsidian, and shorter
+Mason/treesitter lists. Kept: all six working languages with their debuggers
+(Go, PHP, TS/JS, Java, Python), git/fugitive/octo, and codecompanion. Details in
+[CONFIG.md](CONFIG.md#remote-profile); `:Mason` and `:TSInstall <lang>` still work
+on demand if you need something the slim list skipped.
+
+Once connected, debugging is just local debugging again — `<leader>db`,
+`<leader>dc`, `<leader>dn` all run against delve on that machine, no tunnel
+involved. `<leader>dR` is for the case where you *don't* want to move in.
 
 > `:GoDebug` does **not** exist here — go.nvim's debug module is deliberately
 > disabled so it can't conflict with nvim-dap-go. Use `<leader>d*`.
@@ -754,6 +900,22 @@ V<motion> then <leader>ca    → extract function / extract method
 <leader>tta                  → full test run
 ```
 
+### It only reproduces on the staging box
+
+```
+<leader>db                   → breakpoint where you suspect it, locally
+<leader>dR                   → pick the host
+                             → first time: confirm the remote repo root
+                             → "Attach to running process", filter by name
+                             → pick the PID
+<leader>dc                   → let it run into your breakpoint
+<leader>de / <leader>dh      → inspect the state that differs from local
+<leader>dt                   → terminate; the tunnel closes with it
+```
+
+Make sure the remote binary was built from the commit you have checked out —
+mismatched source means breakpoints on the wrong lines.
+
 ---
 
 ## Full Go key reference
@@ -818,6 +980,8 @@ V<motion> then <leader>ca    → extract function / extract method
 | `<leader>dr` / `<leader>du` | REPL / UI |
 | `<leader>dp` / `<leader>dt` / `<leader>dl` | Pause / terminate / run last |
 | `<leader>ds` | Session info |
+| `<leader>dR` | **Remote** debug over SSH — pick host, pick target |
+| `<leader>Hs` / `<leader>Hq` | Start / stop a full **remote Neovim** session |
 
 ### Motions
 
@@ -866,6 +1030,36 @@ so this only affects how things look while typing.
 
 **`:GoDebug` doesn't exist.** go.nvim's debug module is disabled on purpose.
 Use `<leader>d*`.
+
+**Remote breakpoints on the wrong lines** means the remote root is wrong or the
+remote binary was built from different source. `:DapRemoteForgetRoot` fixes the
+first; rebuilding fixes the second.
+
+**Remote `dlv` must be on a login shell's `PATH`.** The session is started with
+`bash -lc`, so `~/.profile` / `~/.bash_profile` need to include `~/go/bin`. If
+`ssh <host> bash -lc 'dlv version'` fails, `<leader>dR` will too.
+
+**`<leader>dR` skips `Host *` entries.** Wildcards configure other hosts, they
+aren't connectable targets. A host you can only reach via a wildcard rule needs
+its own `Host` block.
+
+**Remote attach needs ptrace permission.** On hardened hosts,
+`kernel.yama.ptrace_scope` can block attaching to a process you own. The `dlv
+debug` / `dlv exec` targets don't have this problem.
+
+**A plugin is "missing" in a remote session.** That's the remote profile, not a
+bug — 9 plugins are switched off there and the Mason/treesitter lists are
+shorter. See [CONFIG.md](CONFIG.md#remote-profile) for the list and the reasons.
+`export NVIM_REMOTE=0` forces the full profile if you really want it.
+
+**`go: command not found` on the remote after bootstrapping.** The script appends
+to `~/.profile`; log out and back in, or `source ~/.profile`.
+
+**A non-Go language's tooling looks broken.** Mason installs the tools, but some
+are written in the language they serve — `phpcs`/`phpstan` need a `php`
+interpreter, `jdtls` needs a JDK 21+. Missing runtime, not broken config; see
+[CONFIG.md](CONFIG.md#language-runtimes-are-a-separate-question-from-mason).
+The remote bootstrap script installs all of them.
 
 **Supermaven is installed but inert.** AI completion is off by default. Live
 in `lua/plugins/completion.lua` if you want it.

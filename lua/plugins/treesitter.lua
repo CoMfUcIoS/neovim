@@ -13,7 +13,56 @@ return {
 			install_dir = vim.fn.stdpath("data") .. "/site",
 		})
 
-		require("nvim-treesitter").install({
+		-- Every parser is compiled from C on install, so the remote set covers the
+		-- languages actually worked on there — Go, PHP, TS/JS, Java — plus infra
+		-- formats and lua for this config. Dropped: ruby, rust, python-adjacent,
+		-- puppet, latex, typst, vue, prisma, svelte, scss.
+		-- :TSInstall <lang> still works on demand.
+		local remote_parsers = {
+			-- Go
+			"go",
+			"gomod",
+			"gosum",
+			-- PHP
+			"php",
+			"phpdoc",
+			-- TS / JS
+			"typescript",
+			"javascript",
+			"tsx",
+			-- Java (kotlin is for the build.gradle.kts Gradle DSL)
+			"java",
+			"kotlin",
+			-- Python
+			"python",
+			-- web
+			"html",
+			"css",
+			-- infra + this config
+			"json",
+			"yaml",
+			"bash",
+			"dockerfile",
+			"sql",
+			"lua",
+			"markdown",
+			"markdown_inline",
+			"gitignore",
+			"diff",
+			"query",
+			"vim",
+			"vimdoc",
+			"regex",
+		}
+
+		require("nvim-treesitter").install(vim.g.nvim_remote and remote_parsers or {
+			-- java/python/gomod/gosum were missing from this list entirely; kotlin is
+			-- for build.gradle.kts
+			"java",
+			"kotlin",
+			"python",
+			"gomod",
+			"gosum",
 			"json",
 			"go",
 			"javascript",

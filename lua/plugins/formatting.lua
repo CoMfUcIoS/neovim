@@ -23,13 +23,28 @@ return {
 				graphql = { "prettierd" },
 				liquid = { "prettierd" },
 				lua = { "stylua" },
-				-- python = { "isort", "black" },
+				-- Was commented out, so python had no formatter at all and
+				-- format-on-save silently did nothing (pyright doesn't format).
+				-- ruff covers both jobs black+isort did and is much faster;
+				-- ruff_format is black-compatible. black and isort are still
+				-- installed if you'd rather swap back.
+				python = { "ruff_organize_imports", "ruff_format" },
 				rust = { "rustfmt" },
 				ruby = { "rubocop" },
 				sh = { "shfmt" },
 				puppet = { "puppet-lint" },
-				php = { "php_cs_fixer", "phpstan" },
+				-- phpstan was listed here: it's a static analyser, not a
+				-- formatter — the same mistake golangci-lint was making for Go
+				-- above. It's wired into nvim-lint instead (see linting.lua).
+				php = { "php_cs_fixer" },
+				java = { "google-java-format" },
 				clojure = { "cljfmt" },
+			},
+			-- google-java-format defaults to Google style (2-space). Every Java repo in
+			-- ~/Apps is 4-space with no formatter in the build, so --aosp keeps saves
+			-- from reindenting whole files into review noise.
+			formatters = {
+				["google-java-format"] = { prepend_args = { "--aosp" } },
 			},
 			format_on_save = {
 				lsp_fallback = true,

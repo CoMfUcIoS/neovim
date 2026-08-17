@@ -8,9 +8,14 @@ return {
 		},
 		build = "bundled_build.lua", -- Bundles `mcp-hub` binary along with the neovim plugin
 		config = function()
+			-- Prefer a system mcp-hub (npm global, as on the laptop), but fall
+			-- back to the bundled binary the build step produces. Without this
+			-- the remote gets cmd = "" from exepath and mcphub never starts,
+			-- which takes codecompanion's mcphub extension down with it.
+			local system_mcp_hub = vim.fn.exepath("mcp-hub")
 			require("mcphub").setup({
-				use_bundled_binary = false, -- Use local `mcp-hub` binary
-				cmd = vim.fn.exepath("mcp-hub"),
+				use_bundled_binary = system_mcp_hub == "",
+				cmd = system_mcp_hub ~= "" and system_mcp_hub or nil,
 			})
 		end,
 	},
@@ -33,8 +38,10 @@ return {
 			local codecompanion = require("codecompanion")
 			local adapters = require("codecompanion.adapters")
 
-			local current_adapter_index = 4 -- openrouter is the default
-			local adapter_names = { "copilot", "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
+			-- Keep these two in sync: the index must point at "openrouter".
+			-- (Was 4 when "copilot" led the list; dropping it shifted everything down.)
+			local adapter_names = { "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
+			local current_adapter_index = 3 -- openrouter is the default
 
 			_G.toggle_adapter = function()
 				current_adapter_index = current_adapter_index % #adapter_names + 1
@@ -199,11 +206,6 @@ return {
 				},
 
 				adapters = {
-					-- Copilot (non-HTTP adapter) - use built-in copilot adapter
-					copilot = function()
-						return adapters.extend("copilot", {})
-					end,
-
 					http = {
 						opts = {
 							show_model_choices = true,
@@ -256,10 +258,10 @@ return {
 
 						openrouter = function()
 							local openrouter_models = {
-								"openrouter/owl-alpha",
-								"nvidia/nemotron-3-ultra-550b-a55b:free",
-								"poolside/laguna-m.1:free",
 								"nvidia/nemotron-3-super-120b-a12b:free",
+								"nvidia/nemotron-3-ultra-550b-a55b:free",
+								"openrouter/owl-alpha",
+								"poolside/laguna-m.1:free",
 								-- "qwen/qwen3-next-80b-a3b-instruct:free",
 								-- "google/gemini-2.0-pro-exp-02-05:free",
 								-- "deepseek/deepseek-r1:free",
