@@ -12,6 +12,7 @@ end
 
 require("vim-options")
 require("keymaps")
+require("claude-declaw").setup()
 
 -- Are we the remote half of a remote-nvim.nvim session?
 --
