@@ -1,3 +1,27 @@
+-- Which AI completion engine feeds nvim-cmp: "supermaven" (cloud) or "minuet"
+-- (local ollama + qwen2.5-coder). Only one runs at a time. Default is the local
+-- one; export NVIM_AI_COMPLETION=supermaven on machines allowed to use it.
+vim.g.ai_completion = vim.env.NVIM_AI_COMPLETION or "minuet"
+
+_G.toggle_ai_completion = function()
+	vim.g.ai_completion = vim.g.ai_completion == "supermaven" and "minuet" or "supermaven"
+
+	if vim.g.ai_completion == "supermaven" then
+		-- Minuet may not be loaded yet (InsertEnter); it reads vim.g at setup, so pcall is enough.
+		pcall(vim.cmd, "Minuet cmp disable")
+		vim.cmd("SupermavenStart")
+	else
+		pcall(vim.cmd, "SupermavenStop")
+		pcall(vim.cmd, "Minuet cmp enable")
+	end
+
+	vim.notify("AI completion: " .. vim.g.ai_completion)
+end
+
+vim.keymap.set({ "n", "v" }, "<leader>zc", _G.toggle_ai_completion, {
+	desc = "Toggle AI completion (supermaven/minuet)",
+})
+
 return {
 	{
 		"L3MON4D3/LuaSnip",
@@ -31,9 +55,35 @@ return {
 			disable_keymaps = true,
 			disable_inline_completion = true,
 			condition = function()
-				return false
+				return vim.g.ai_completion ~= "supermaven"
 			end,
 		},
+	},
+	{
+		"milanglacier/minuet-ai.nvim",
+		dependencies = { "hrsh7th/nvim-cmp" },
+		event = "InsertEnter",
+		config = function()
+			require("minuet").setup({
+				provider = "openai_fim_compatible",
+				n_completions = 1, -- one suggestion from a local 7b beats three slow ones
+				context_window = 8000,
+				request_timeout = 5,
+				cmp = { enable_auto_complete = vim.g.ai_completion == "minuet" },
+				provider_options = {
+					openai_fim_compatible = {
+						name = "Ollama",
+						end_point = "http://localhost:11434/v1/completions",
+						model = "qwen2.5-coder",
+						-- ollama needs no key, but minuet wants the name of an env var that exists
+						api_key = "TERM",
+						stream = true,
+						-- without a stop the model runs to max_tokens and starts repeating the file
+						optional = { max_tokens = 128, top_p = 0.9, stop = { "\n\n" } },
+					},
+				},
+			})
+		end,
 	},
 	{
 		"folke/lazydev.nvim",
@@ -77,6 +127,7 @@ return {
 				nvim_lsp = "[LSP]",
 				nvim_lua = "[Lua]",
 				path = "[Path]",
+				minuet = "[Ollama]",
 			}
 			local has_words_before = function()
 				if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
@@ -143,13 +194,14 @@ return {
 				performance = {
 					debounce = 0,
 					throttle = 0,
-					fetching_timeout = 200,
+					fetching_timeout = 2000, -- local ollama is slower than a cloud FIM endpoint
 					confirm_resolve_timeout = 80,
 					async_budget = 1,
 					max_view_entries = 10,
 				},
 				sources = {
 					{ name = "lazydev", group_index = 1 },
+					{ name = "minuet" },
 					{ name = "supermaven" },
 					-- { name = "copilot" },
 					-- { name = "codeium" },

@@ -38,10 +38,9 @@ return {
 			local codecompanion = require("codecompanion")
 			local adapters = require("codecompanion.adapters")
 
-			-- Keep these two in sync: the index must point at "openrouter".
-			-- (Was 4 when "copilot" led the list; dropping it shifted everything down.)
-			local adapter_names = { "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
-			local current_adapter_index = 3 -- openrouter is the default
+			-- Keep these two in sync: the index must point at "claude_code".
+			local adapter_names = { "claude_code", "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
+			local current_adapter_index = 1 -- claude_code is the default
 
 			_G.toggle_adapter = function()
 				current_adapter_index = current_adapter_index % #adapter_names + 1
@@ -93,7 +92,7 @@ return {
 
 				strategies = {
 					chat = {
-						adapter = "openrouter",
+						adapter = "claude_code",
 					},
 					inline = {
 						adapter = "openrouter",
@@ -206,6 +205,24 @@ return {
 				},
 
 				adapters = {
+					acp = {
+						claude_code = function()
+							return adapters.extend("claude_code", {
+								-- codecompanion resolves an *unset* env var to its own name
+								-- (adapters/utils/init.lua:330), so the adapter's auth handler
+								-- exported the literal "CLAUDE_CODE_OAUTH_TOKEN" and the bridge
+								-- sent it as a bearer token -> 401. Return nil instead so
+								-- claude-agent-acp falls back to the Claude CLI login, and still
+								-- pick the token up if one is ever exported.
+								env = {
+									CLAUDE_CODE_OAUTH_TOKEN = function()
+										return vim.env.CLAUDE_CODE_OAUTH_TOKEN
+									end,
+								},
+							})
+						end,
+					},
+
 					http = {
 						opts = {
 							show_model_choices = true,
@@ -342,20 +359,20 @@ return {
 			end
 
 			-- Set initial adapter and keymap for <leader>za to OpenRouter
-			vim.g.codecompanion_adapter = "openrouter"
+			vim.g.codecompanion_adapter = "claude_code"
 
 			vim.api.nvim_set_keymap(
 				"n",
 				"<leader>za",
-				"<cmd>CodeCompanionChat adapter=openrouter<cr>",
-				{ noremap = true, silent = true, desc = "CodeCompanionChat openrouter" }
+				"<cmd>CodeCompanionChat adapter=claude_code<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat claude_code" }
 			)
 
 			vim.api.nvim_set_keymap(
 				"v",
 				"<leader>za",
-				"<cmd>CodeCompanionChat openrouter<cr>",
-				{ noremap = true, silent = true, desc = "CodeCompanionChat openrouter" }
+				"<cmd>CodeCompanionChat adapter=claude_code<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat claude_code" }
 			)
 
 			vim.cmd([[cab cc CodeCompanion]])
