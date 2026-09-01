@@ -267,7 +267,7 @@ return {
 								},
 								schema = {
 									model = {
-										default = "glm-4-32b-0414:q6_k",
+										default = "qwen2.5-coder:14b",
 									},
 								},
 							})

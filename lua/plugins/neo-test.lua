@@ -7,7 +7,13 @@ return {
 			"nvim-lua/plenary.nvim",
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			{ "fredrikaverpil/neotest-golang", version = "*" },
+			{
+				"fredrikaverpil/neotest-golang",
+				version = "*",
+				build = function()
+					vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
+				end,
+			},
 			"markemmons/neotest-deno",
 			"olimorris/neotest-phpunit",
 			{ "thenbe/neotest-playwright", dependencies = { "nvim-telescope/telescope.nvim" } },
@@ -40,7 +46,7 @@ return {
 		config = function()
 			require("neotest").setup({
 				adapters = {
-					require("neotest-golang"),
+					require("neotest-golang")({ runner = "gotestsum" }),
 					require("neotest-vitest"),
 					require("neotest-rspec"),
 					require("neotest-deno"),
