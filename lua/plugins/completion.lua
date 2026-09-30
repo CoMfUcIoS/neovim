@@ -74,7 +74,7 @@ return {
 					openai_fim_compatible = {
 						name = "Ollama",
 						end_point = "http://localhost:11434/v1/completions",
-						model = "qwen2.5-coder",
+						model = "qwen2.5-coder:14b",
 						-- ollama needs no key, but minuet wants the name of an env var that exists
 						api_key = "TERM",
 						stream = true,

@@ -38,9 +38,9 @@ return {
 			local codecompanion = require("codecompanion")
 			local adapters = require("codecompanion.adapters")
 
-			-- Keep these two in sync: the index must point at "claude_code".
-			local adapter_names = { "claude_code", "xai", "anthropic", "openrouter", "ollama_remote", "ollama" }
-			local current_adapter_index = 1 -- claude_code is the default
+			-- Keep these two in sync: the index must point at "ollama".
+			local adapter_names = { "ollama", "claude_code", "xai", "anthropic", "openrouter", "ollama_remote" }
+			local current_adapter_index = 1 -- ollama is the default
 
 			_G.toggle_adapter = function()
 				current_adapter_index = current_adapter_index % #adapter_names + 1
@@ -92,10 +92,10 @@ return {
 
 				strategies = {
 					chat = {
-						adapter = "claude_code",
+						adapter = "ollama",
 					},
 					inline = {
-						adapter = "openrouter",
+						adapter = "ollama",
 					},
 				},
 
@@ -262,12 +262,15 @@ return {
 
 						ollama = function()
 							return adapters.extend("ollama", {
-								parameters = {
-									sync = true,
-								},
 								schema = {
+									-- qwen2.5-coder prints tool calls as plain JSON text instead of
+									-- native tool_calls, so @{agent} and MCP tools never fire with it.
 									model = {
-										default = "qwen2.5-coder:14b",
+										default = "qwen3:14b",
+									},
+									-- Ollama's 4096 default truncates the agent prompt plus tool schemas.
+									num_ctx = {
+										default = 32768,
 									},
 								},
 							})
@@ -358,21 +361,21 @@ return {
 				)
 			end
 
-			-- Set initial adapter and keymap for <leader>za to OpenRouter
-			vim.g.codecompanion_adapter = "claude_code"
+			-- Set initial adapter and keymap for <leader>za to ollama
+			vim.g.codecompanion_adapter = "ollama"
 
 			vim.api.nvim_set_keymap(
 				"n",
 				"<leader>za",
-				"<cmd>CodeCompanionChat adapter=claude_code<cr>",
-				{ noremap = true, silent = true, desc = "CodeCompanionChat claude_code" }
+				"<cmd>CodeCompanionChat adapter=ollama<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat ollama" }
 			)
 
 			vim.api.nvim_set_keymap(
 				"v",
 				"<leader>za",
-				"<cmd>CodeCompanionChat adapter=claude_code<cr>",
-				{ noremap = true, silent = true, desc = "CodeCompanionChat claude_code" }
+				"<cmd>CodeCompanionChat adapter=ollama<cr>",
+				{ noremap = true, silent = true, desc = "CodeCompanionChat ollama" }
 			)
 
 			vim.cmd([[cab cc CodeCompanion]])
